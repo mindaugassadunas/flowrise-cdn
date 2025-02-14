@@ -1,0 +1,96 @@
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.swiper {
+  padding-bottom: 50px;
+}
+
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #eee;
+  margin-bottom: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+.error-message {
+  display: none;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.error .error-message {
+  display: block;
+}
+
+.form-group input.error,
+.form-group select.error {
+  border-color: red;
+}
+
+[fl-form='success-message'] {
+  display: none;
+}
+
+/* General */
+/* Demo styles */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f8fafc;
+}
+
+.demo-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.demo-title {
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.selected-value {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #334155;
+}

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div>
+      <h1>Form</h1>
+      <div class="demo-container">
+        <h1 class="demo-title">Searchable Dropdown</h1>
+
+        <form action="/test" method="post">
+          <!-- Searchable dropdown -->
+          <div class="dropdown-container" fl="dropdown" fl-type="searchable">
+            <div
+              class="dropdown-input"
+              fl-part="dropdown-input"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="dropdown-menu"
+              tabindex="0"
+            ></div>
+            <button
+              type="button"
+              class="dropdown-toggle"
+              fl-part="dropdown-toggle"
+              aria-label="Toggle dropdown"
+            >
+              ▼
+            </button>
+            <div
+              id="dropdown-menu"
+              class="dropdown-menu"
+              fl-part="dropdown-menu"
+              role="listbox"
+            >
+              <div class="search-container" fl-part="dropdown-search-container">
+                <input
+                  type="text"
+                  class="search-input"
+                  fl-part="dropdown-search-input"
+                  placeholder="Search..."
+                  aria-label="Search options"
+                />
+              </div>
+              <div
+                class="options-container"
+                fl-part="dropdown-options-container"
+              ></div>
+            </div>
+            <input type="hidden" name="searchable_dropdown" value="" />
+          </div>
+
+          <!-- Custom dropdown -->
+          <div class="dropdown-container" fl="dropdown" fl-type="custom">
+            <div
+              class="dropdown-input"
+              fl-part="dropdown-input"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="dropdown-menu"
+              tabindex="0"
+            ></div>
+            <button
+              type="button"
+              class="dropdown-toggle"
+              fl-part="dropdown-toggle"
+              aria-label="Toggle dropdown"
+            >
+              ▼
+            </button>
+            <div
+              id="dropdown-menu"
+              class="dropdown-menu"
+              fl-part="dropdown-menu"
+              role="listbox"
+            >
+              <div
+                class="options-container"
+                fl-part="dropdown-options-container"
+              ></div>
+            </div>
+            <input type="hidden" name="custom_dropdown" value="" />
+          </div>
+
+          <!-- Native dropdown -->
+          <select name="fruits" id="fruits">
+            <option value="">Please select a fruit</option>
+            <optgroup label="Citrus Fruits">
+              <option value="orange">Orange</option>
+              <option value="lemon">Lemon</option>
+              <option value="lime">Lime</option>
+            </optgroup>
+            <optgroup label="Berries">
+              <option value="strawberry">Strawberry</option>
+              <option value="blueberry">Blueberry</option>
+              <option value="raspberry">Raspberry</option>
+            </optgroup>
+            <optgroup label="Tropical Fruits">
+              <option value="mango">Mango</option>
+              <option value="pineapple">Pineapple</option>
+              <option value="banana">Banana</option>
+            </optgroup>
+          </select>
+
+          <!-- Multi dropdown -->
+          <div class="dropdown-container" fl="dropdown" fl-type="multi">
+            <div
+              class="dropdown-input"
+              fl-part="dropdown-input"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="dropdown-menu"
+              tabindex="0"
+            ></div>
+            <button
+              type="button"
+              class="dropdown-toggle"
+              fl-part="dropdown-toggle"
+              aria-label="Toggle dropdown"
+            >
+              ▼
+            </button>
+            <div
+              id="dropdown-menu"
+              class="dropdown-menu"
+              fl-part="dropdown-menu"
+              role="listbox"
+            >
+              <div class="search-container" fl-part="dropdown-search-container">
+                <input
+                  type="text"
+                  class="search-input"
+                  fl-part="dropdown-search-input"
+                  placeholder="Search..."
+                  aria-label="Search options"
+                />
+              </div>
+              <div
+                class="options-container"
+                fl-part="dropdown-options-container"
+              ></div>
+            </div>
+            <input type="hidden" name="multi_dropdown[]" value="" />
+          </div>
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+    <script type="module" src="/test_pages/script.ts" defer></script>
+  </body>
+</html>

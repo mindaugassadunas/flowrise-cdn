@@ -1,0 +1,79 @@
+.select-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.select-tab {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-tab:hover {
+  border-color: #94a3b8;
+}
+
+.select-tab:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.select-tab.selected {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+}
+
+.tab-icon {
+  margin-right: 12px;
+  color: #64748b;
+}
+
+.select-tab.selected .tab-icon {
+  color: #3b82f6;
+}
+
+.tab-content {
+  flex: 1;
+}
+
+.tab-title {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.tab-description {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.tab-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: '4px';
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.select-tab.selected .tab-checkbox {
+  border-color: #3b82f6;
+}
+
+.select-tab.selected .tab-checkbox::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #3b82f6;
+  border-radius: '2px';
+}

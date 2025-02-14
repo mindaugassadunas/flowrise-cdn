@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div>
+      <h1>Form</h1>
+      <div class="demo-container">
+        <h1 class="demo-title">Multi-step</h1>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <form
+          action="/test"
+          method="post"
+          id="multiStepForm"
+          fl-type="multi-step"
+        >
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              <!-- Step 1: Personal Information -->
+              <div class="swiper-slide form-step">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input type="text" id="firstName" name="firstName" required />
+                  <div class="error-message" data-error="firstName">
+                    Please enter your first name
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input type="text" id="lastName" name="lastName" required />
+                  <div class="error-message" data-error="lastName">
+                    Please enter your last name
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    data-validate
+                    data-validate-rules="required,email"
+                    data-validate-message-required="Email is required"
+                    data-validate-message-email="Please enter a valid email address"
+                  />
+                  <div class="error-message" data-error="email">
+                    Please enter a valid email address
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Contact Details -->
+              <div class="swiper-slide form-step">
+                <h2>Contact Details</h2>
+                <div class="form-group">
+                  <label for="phone">Phone Number *</label>
+                  <input type="tel" id="phone" name="phone" required />
+                  <div class="error-message" data-error="phone">
+                    Please enter a valid phone number
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country *</label>
+                  <select id="country" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="us">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="ca">Canada</option>
+                  </select>
+                  <div class="error-message" data-error="country">
+                    Please select a country
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Confirmation -->
+              <div class="swiper-slide form-step">
+                <h2>Confirmation</h2>
+                <div id="summaryContent">
+                  <!-- Will be populated dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <div class="global-navigation">
+              <div class="form-progress">
+                Step <span id="currentStep">1</span> of 3
+              </div>
+              <div class="form-navigation" id="globalNavigation">
+                <button type="button" id="prevBtn" style="display: none">
+                  Previous
+                </button>
+                <button type="button" id="nextBtn">Next</button>
+                <button type="submit" id="submitBtn" style="display: none">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="module" src="/test_pages/multi-step/script.ts" defer></script>
+    <!-- <script type="module" src="/src/products/form/form.ts" defer></script> -->
+  </body>
+</html>

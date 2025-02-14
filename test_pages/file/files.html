@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div>
+      <h1>Form</h1>
+      <div class="demo-container">
+        <h1 class="demo-title">Datepicker</h1>
+
+        <form action="/test" method="post">
+          <div class="upload-container" id="uploadContainer">
+            <!-- File upload -->
+            <div class="file-input-wrapper">
+              <div class="upload-button">
+                Choose Files
+                <input
+                  type="file"
+                  class="file-input"
+                  id="fileInput"
+                  multiple
+                  accept="image/*,application/pdf,application/zip"
+                />
+              </div>
+            </div>
+
+            <div class="file-list" id="fileList">
+              <!-- Template for file items -->
+              <template id="fileItemTemplate">
+                <div class="file-item">
+                  <img class="file-preview" src="" alt="File preview" />
+                  <div class="file-info">
+                    <div class="file-name"></div>
+                    <div class="file-size"></div>
+                    <div class="error-message"></div>
+                  </div>
+                  <div class="progress-wrapper">
+                    <div class="progress-bar">
+                      <div class="progress-fill"></div>
+                    </div>
+                  </div>
+                  <div class="file-actions">
+                    <button class="action-button cancel-button">Cancel</button>
+                    <button
+                      class="action-button retry-button"
+                      style="display: none"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+    <script type="module" src="/test_pages/file/script.ts" defer></script>
+  </body>
+</html>
