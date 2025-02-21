@@ -42,6 +42,22 @@ const formConfig: FormConfig = {
       validateOnShow: false,
     },
   ],
+  conditionalSteps: [
+    {
+      stepId: 'step2',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'searchable_dropdown',
+          operator: 'equals',
+          value: 'us',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: true,
+    },
+  ],
   fields: {
     country: {
       type: 'dropdown',

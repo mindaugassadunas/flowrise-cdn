@@ -1,16 +1,26 @@
 import { FormConfig } from '../models/formTypes';
 import { BaseForm } from './BaseForm';
 import Swiper from 'swiper';
+import { StepConditionManager } from '../managers/ConditionalSlideManager';
 
 export class MultiStepForm extends BaseForm {
   private swiper!: Swiper;
   private currentStepElement: HTMLElement | null;
   private progressBar: HTMLElement | null;
   private formData: Record<string, any> = {};
+  private visibleSteps: number[] = [];
+  private stepConditionManager!: StepConditionManager;
 
   constructor(wrapper: HTMLElement, form: HTMLFormElement, config: FormConfig) {
     super(wrapper, form, config);
     this.initializeSwiper();
+    this.stepConditionManager = new StepConditionManager(
+      this.swiper,
+      this.stateManager,
+      config.conditionalSteps || [],
+      this.handleStepVisibilityChange.bind(this),
+    );
+    this.initializeVisibleSteps();
     this.currentStepElement = document.getElementById('currentStep');
     this.progressBar = document.getElementById('progressBar');
   }
@@ -36,6 +46,54 @@ export class MultiStepForm extends BaseForm {
     super.setupEventListeners();
     this.attachEventListeners();
     this.addGlobalTabNavigation();
+  }
+
+  private initializeVisibleSteps(): void {
+    // Initially, all steps are visible
+    this.visibleSteps = Array.from(
+      { length: this.swiper.slides.length },
+      (_, i) => i,
+    );
+
+    // Apply initial conditions
+    if (this.config.conditionalSteps) {
+      this.stepConditionManager.evaluateAllConditions();
+    }
+  }
+
+  private handleStepVisibilityChange(
+    stepIndex: number,
+    isVisible: boolean,
+  ): void {
+    if (isVisible) {
+      // Add the step if it’s not already present.
+      if (!this.visibleSteps.includes(stepIndex)) {
+        this.visibleSteps.push(stepIndex);
+        this.visibleSteps.sort((a, b) => a - b);
+      }
+    } else {
+      // Remove the step from the visibleSteps array.
+      const index = this.visibleSteps.indexOf(stepIndex);
+      if (index !== -1) {
+        this.visibleSteps.splice(index, 1);
+      }
+
+      // If the current slide was hidden, navigate to the next available visible slide.
+      if (stepIndex === this.swiper.activeIndex) {
+        let nextVisible = this.visibleSteps.find(index => index > stepIndex);
+        if (nextVisible === undefined) {
+          nextVisible = this.visibleSteps
+            .slice()
+            .reverse()
+            .find(index => index < stepIndex);
+        }
+        if (nextVisible !== undefined) {
+          this.swiper.slideTo(nextVisible);
+        }
+      }
+    }
+
+    this.updateUI();
   }
 
   protected attachEventListeners(): void {
@@ -130,61 +188,91 @@ export class MultiStepForm extends BaseForm {
     // Skip Swiper-specific updates if Swiper isn't properly initialized
     if (this.swiper?.slides) {
       const currentIndex = this.swiper.activeIndex;
-      const totalSlides = this.swiper.slides.length;
+      let visibleIndex = this.visibleSteps.indexOf(currentIndex);
+
+      // If the current slide is not visible, adjust to the nearest visible slide.
+      if (visibleIndex === -1 && this.visibleSteps.length > 0) {
+        const nextVisible =
+          this.visibleSteps.find(index => index > currentIndex) ||
+          this.visibleSteps[this.visibleSteps.length - 1];
+        this.swiper.slideTo(nextVisible);
+        visibleIndex = this.visibleSteps.indexOf(nextVisible);
+      }
 
       if (this.currentStepElement) {
-        this.currentStepElement.textContent = (currentIndex + 1).toString();
+        this.currentStepElement.textContent = (visibleIndex + 1).toString();
       }
 
-      this.updateNavigationButtons(currentIndex, totalSlides);
-      this.updateProgressBar();
-
-      if (currentIndex === totalSlides - 1) {
-        this.updateSummary();
-      }
+      this.updateNavigationButtons(visibleIndex);
+      this.updateProgressBar(visibleIndex);
+      super.updateUI(this.stateManager.getState());
     }
 
     // Call parent's updateUI for general form updates
     super.updateUI(this.stateManager.getState());
   }
 
-  private updateNavigationButtons(
-    currentIndex: number,
-    totalSlides: number,
-  ): void {
+  private updateNavigationButtons(currentPosition: number): void {
     const globalNav = document.getElementById('globalNavigation');
-    if (globalNav) {
-      const prevBtn = globalNav.querySelector('#prevBtn') as HTMLButtonElement;
-      const nextBtn = globalNav.querySelector('#nextBtn') as HTMLButtonElement;
-      const submitBtn = globalNav.querySelector(
-        '#submitBtn',
-      ) as HTMLButtonElement;
+    if (!globalNav) return;
 
-      prevBtn.style.display = currentIndex === 0 ? 'none' : 'block';
-      nextBtn.style.display =
-        currentIndex === totalSlides - 1 ? 'none' : 'block';
-      submitBtn.style.display =
-        currentIndex === totalSlides - 1 ? 'block' : 'none';
+    const prevBtn = globalNav.querySelector('#prevBtn') as HTMLButtonElement;
+    const nextBtn = globalNav.querySelector('#nextBtn') as HTMLButtonElement;
+    const submitBtn = globalNav.querySelector(
+      '#submitBtn',
+    ) as HTMLButtonElement;
+
+    // Simple position-based checks
+    const isFirstVisible = currentPosition === 0;
+    const isLastVisible = currentPosition === this.visibleSteps.length - 1;
+
+    console.log('First slide', isFirstVisible);
+    console.log('Last slide', isLastVisible);
+    console.log('currentPosition', currentPosition);
+
+    // Update button visibility
+    prevBtn.style.display = isFirstVisible ? 'none' : 'block';
+    nextBtn.style.display = isLastVisible ? 'none' : 'block';
+    submitBtn.style.display = isLastVisible ? 'block' : 'none';
+
+    // Update total steps display
+    const totalStepsElement = this.currentStepElement?.parentElement;
+    if (totalStepsElement) {
+      totalStepsElement.textContent = `Step ${currentPosition + 1} of ${this.visibleSteps.length}`;
     }
   }
 
-  private updateProgressBar(): void {
+  private updateProgressBar(currentVisibleIndex: number): void {
     if (this.progressBar) {
       const progress =
-        ((this.swiper.activeIndex + 1) / this.swiper.slides.length) * 100;
+        ((currentVisibleIndex + 1) / this.visibleSteps.length) * 100;
       this.progressBar.style.width = `${progress}%`;
     }
   }
 
   private previousStep(): void {
-    this.swiper.slidePrev();
+    const currentIndex = this.swiper.activeIndex;
+    // Find the previous visible step
+    const previousStep = this.visibleSteps
+      .slice()
+      .reverse()
+      .find(index => index < currentIndex);
+
+    if (previousStep !== undefined) {
+      this.swiper.slideTo(previousStep);
+    }
   }
 
   private async nextStep(): Promise<void> {
-    console.log('NEXT');
     const isValid = await this.validateCurrentStep();
-    if (isValid) {
-      this.swiper.slideNext();
+    if (!isValid) return;
+
+    const currentIndex = this.swiper.activeIndex;
+    // Find the next visible step
+    const nextStep = this.visibleSteps.find(index => index > currentIndex);
+
+    if (nextStep !== undefined) {
+      this.swiper.slideTo(nextStep);
     }
   }
 

@@ -19,6 +19,7 @@ export interface FormConfig {
   redirectParams?: RedirectParam[];
   errorMessage?: string;
   conditionalFields?: ConditionalFieldConfig[];
+  conditionalSteps?: ConditionalStepConfig[];
 }
 
 export interface BaseFieldConfig {
@@ -36,6 +37,21 @@ export interface BaseFieldConfig {
     message: string;
     params?: any;
   }>;
+}
+
+export interface ConditionalStepConfig {
+  stepId: string;
+  action: 'show' | 'hide';
+  operator?: 'AND' | 'OR';
+  conditions: Condition[];
+  clearOnHide?: boolean;
+  validateOnShow?: boolean;
+}
+
+export interface Condition {
+  fieldId: string;
+  operator: ConditionalOperator;
+  value?: any;
 }
 
 // export type FieldConfig = DropdownFieldConfig | '';
