@@ -20,6 +20,10 @@
   user-select: none;
 }
 
+.dropdown-input-wrapper {
+  position: relative;
+}
+
 [fl-part='dropdown-input']:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 1px #3b82f6;

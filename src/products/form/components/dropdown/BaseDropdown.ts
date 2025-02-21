@@ -130,6 +130,9 @@ export class BaseDropdown {
     this.setupKeyboardNavigation();
     this.attachEventListeners();
     this.setupTouchEvents();
+    if (this.config.placeholder) {
+      this.updateInputValue(this.config.placeholder);
+    }
     window.addEventListener('resize', this.updateMenuPosition);
     window.addEventListener('scroll', this.updateMenuPosition, true);
   }

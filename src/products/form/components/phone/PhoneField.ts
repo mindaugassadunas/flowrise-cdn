@@ -27,11 +27,27 @@ export class PhoneField {
 
       this.iti = intlTelInput(this.input, {
         onlyCountries: this.config.onlyCountries || [],
-        initialCountry: this.config.defaultCountry,
+        // initialCountry: this.config.defaultCountry,
+        initialCountry: 'auto',
         separateDialCode: false,
         formatOnDisplay: true,
         autoPlaceholder: 'aggressive',
         allowDropdown: true,
+        geoIpLookup: function (callback: (countryCode: string) => void) {
+          fetch('https://ipapi.co/json')
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error('Failed to fetch country');
+            })
+            .then(function (data) {
+              callback(data.country_code);
+            })
+            .catch(function () {
+              callback('lt'); // Default to LT
+            });
+        },
         loadUtils: () =>
           import(
             /* @vite-ignore */ 'https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.0/build/js/utils.js'
