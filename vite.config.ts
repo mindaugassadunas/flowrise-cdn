@@ -40,7 +40,7 @@ export default defineConfig({
         dir: 'dist',
         entryFileNames: 'webflow-ext-[name].js',
         format: 'iife',
-        name: 'WebflowExt[name]',
+        name: 'WebflowExt',
         globals: {
           swiper: 'Swiper',
           'just-validate': 'JustValidate',

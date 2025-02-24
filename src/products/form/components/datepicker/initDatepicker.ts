@@ -1,5 +1,5 @@
 import { DatepickerConfig } from './types/datepickerTypes';
-import { Datepicker } from './datepicker';
+import { Datepicker } from './Datepicker';
 
 export function createDatepicker(
   element: HTMLElement,

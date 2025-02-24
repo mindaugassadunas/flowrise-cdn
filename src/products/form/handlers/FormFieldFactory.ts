@@ -1,5 +1,5 @@
 import { createDatepicker } from '../components/datepicker/initDatepicker';
-import { Datepicker } from '../components/datepicker/datepicker';
+import { Datepicker } from '../components/datepicker/Datepicker';
 import { DatepickerConfig } from '../components/datepicker/types/datepickerTypes';
 import { BaseDropdown } from '../components/dropdown/BaseDropdown';
 import { createDropdown } from '../components/dropdown/dropdown';
