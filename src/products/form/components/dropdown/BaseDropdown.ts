@@ -71,7 +71,9 @@ export class BaseDropdown {
   }
 
   private getInlineOptions(): DropdownOption[] {
-    const optionElements = this.element.querySelectorAll('[fl-part="option"]');
+    const optionElements = this.element.querySelectorAll(
+      '[fl-part="dropdown-option"]',
+    );
 
     return Array.from(optionElements).map(element => {
       const value = element.getAttribute('value') || '';
@@ -99,7 +101,7 @@ export class BaseDropdown {
     const menu = this.element.querySelector('[fl-part="dropdown-menu"]');
     const toggle = this.element.querySelector('[fl-part="dropdown-toggle"]');
     const optionsContainer = this.element.querySelector(
-      '[fl-part="dropdown-options-container"]',
+      '[fl-part="dropdown-options-wrapper"]',
     );
     console.log(input);
     console.log(menu);
@@ -268,7 +270,7 @@ export class BaseDropdown {
     const items =
       this.elements.optionsContainer.querySelectorAll('[role="option"]');
     items.forEach((item, index) => {
-      item.classList.toggle('active', index === this.activeIndex);
+      item.classList.toggle('is-active', index === this.activeIndex);
       item.setAttribute(
         'aria-selected',
         (index === this.activeIndex).toString(),
@@ -461,15 +463,14 @@ export class BaseDropdown {
       const displayText = value || this.config.placeholder || 'Select...';
       const isPlaceholder =
         displayText === (this.config.placeholder || 'Select...');
-      console.log('placeholder value', value);
 
       this.elements.input.textContent = displayText;
 
       // Toggle placeholder class based on whether we're showing a placeholder
       if (isPlaceholder) {
-        this.elements.input.classList.add('placeholder');
+        this.elements.input.classList.add('is-placeholder');
       } else {
-        this.elements.input.classList.remove('placeholder');
+        this.elements.input.classList.remove('is-placeholder');
       }
     }
   }
@@ -508,6 +509,7 @@ export class BaseDropdown {
       const optionElement = document.createElement('div');
       optionElement.setAttribute('role', 'option');
       optionElement.setAttribute('aria-selected', 'false');
+      optionElement.setAttribute('fl-part', 'dropdown-option');
       optionElement.classList.add('dropdown-option');
       optionElement.dataset.value = option.value;
 
