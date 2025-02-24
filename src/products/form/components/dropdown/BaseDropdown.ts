@@ -23,9 +23,7 @@ export class BaseDropdown {
   constructor(element: HTMLElement, config: DropdownConfig) {
     this.element = element;
     this.config = config;
-    this.options = Array.isArray(config.options)
-      ? config.options
-      : [config.options];
+    this.options = this.initializeOptions();
     this.validateAndInitializeElements();
     this.init();
     this.initializeHiddenInput();
@@ -50,6 +48,50 @@ export class BaseDropdown {
   private removeFromPortal(): void {
     if (!this.portal) return;
     this.portal.unmount();
+  }
+
+  private initializeOptions(): DropdownOption[] {
+    // First check for inline HTML options
+    const inlineOptions = this.getInlineOptions();
+
+    // If inline options exist, use them
+    if (inlineOptions.length > 0) {
+      return inlineOptions;
+    }
+
+    // Otherwise, use config options if they exist
+    if (this.config.options) {
+      return Array.isArray(this.config.options)
+        ? this.config.options
+        : [this.config.options];
+    }
+
+    // If no options are found, return empty array
+    return [];
+  }
+
+  private getInlineOptions(): DropdownOption[] {
+    const optionElements = this.element.querySelectorAll('[fl-part="option"]');
+
+    return Array.from(optionElements).map(element => {
+      const value = element.getAttribute('value') || '';
+      const label = element.textContent || '';
+      // Optional: get additional data attributes
+      const dataset = (element as HTMLElement).dataset;
+      const data = Object.keys(dataset).reduce(
+        (acc, key) => {
+          acc[key] = dataset[key] || '';
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+
+      return {
+        value,
+        label,
+        data,
+      };
+    });
   }
 
   private validateAndInitializeElements(): void {
@@ -444,6 +486,50 @@ export class BaseDropdown {
 
   protected renderOptions(): void {
     // To be implemented by child classes
+    if (!this.elements.optionsContainer) return;
+
+    // Clear existing options
+    this.elements.optionsContainer.innerHTML = '';
+
+    // Render each option
+    this.options.forEach((option, index) => {
+      const optionElement = document.createElement('div');
+      optionElement.setAttribute('role', 'option');
+      optionElement.setAttribute('aria-selected', 'false');
+      optionElement.classList.add('dropdown-option');
+      optionElement.dataset.value = option.value;
+
+      // Add data attributes if they exist
+      if (option.data) {
+        Object.entries(option.data).forEach(([key, value]) => {
+          optionElement.dataset[key] = value;
+        });
+      }
+
+      // Create and append the label
+      const labelElement = document.createElement('span');
+      labelElement.textContent = option.label;
+      optionElement.appendChild(labelElement);
+
+      // Add click handler
+      optionElement.addEventListener('click', () => {
+        this.selectOption(option);
+      });
+
+      // Add to container
+      this.elements.optionsContainer.appendChild(optionElement);
+    });
+  }
+
+  // Methods to dynamically add/remove options
+  public addOption(option: DropdownOption): void {
+    this.options.push(option);
+    this.renderOptions();
+  }
+
+  public removeOption(value: string): void {
+    this.options = this.options.filter(opt => opt.value !== value);
+    this.renderOptions();
   }
 
   public destroy(): void {

@@ -130,6 +130,68 @@
                       required
                     />
                   </div>
+                  <!-- Regular dropdown -->
+                  <div
+                    id="skills"
+                    class="form-group dropdown-container"
+                    fl="dropdown"
+                    fl-type="custom"
+                  >
+                    <div class="dropdown-input-wrapper">
+                      <div
+                        class="dropdown-input"
+                        fl-part="dropdown-input"
+                        role="combobox"
+                        aria-expanded="false"
+                        aria-controls="dropdown-menu"
+                        tabindex="0"
+                      ></div>
+                      <button
+                        type="button"
+                        class="dropdown-toggle"
+                        fl-part="dropdown-toggle"
+                        aria-label="Toggle dropdown"
+                      >
+                        ▼
+                      </button>
+                    </div>
+                    <div
+                      id="dropdown-menu2"
+                      class="dropdown-menu"
+                      fl-part="dropdown-menu"
+                      role="listbox"
+                    >
+                      <!-- <div
+                        class="search-container"
+                        fl-part="dropdown-search-container"
+                      >
+                        <input
+                          type="text"
+                          class="search-input"
+                          fl-part="dropdown-search-input"
+                          fl-no-validate
+                          placeholder="Search..."
+                          aria-label="Search options"
+                        />
+                      </div> -->
+                      <div
+                        class="options-container"
+                        fl-part="dropdown-options-container"
+                      >
+                        <div fl-part="option" value="Full-time">Full-time</div>
+                        <div fl-part="option" value="Part-time">Part-time</div>
+                        <div fl-part="option" value="Other">Other</div>
+                      </div>
+                    </div>
+                    <input
+                      type="hidden"
+                      name="skills_dropdown"
+                      id="skills_dropdown"
+                      value=""
+                      fl-functional-input
+                      required
+                    />
+                  </div>
                   <!-- Phone  -->
                   <div class="form-group">
                     <label for="phoneInput">Phone</label>

@@ -28,6 +28,7 @@ export interface DropdownConfig extends BaseFieldConfig {
 export interface DropdownOption {
   value: string;
   label: string;
+  data?: Record<string, string>;
 }
 
 export interface DropdownElements {

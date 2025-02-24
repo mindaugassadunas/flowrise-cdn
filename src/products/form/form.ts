@@ -70,6 +70,16 @@ const formConfig: FormConfig = {
       searchable: true,
       placeholder: 'Select a country...',
     },
+    skills: {
+      type: 'dropdown',
+      // options: [
+      //   { value: 'us', label: 'United States' },
+      //   { value: 'ca', label: 'Canada' },
+      // ],
+      // options: getAllCountries(),
+      searchable: false,
+      placeholder: 'Select your skills...',
+    },
     datepicker: {
       type: 'datepicker',
       format: 'YYYY-MM-DD',
