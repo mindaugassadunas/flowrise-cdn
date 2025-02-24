@@ -458,7 +458,19 @@ export class BaseDropdown {
 
   protected updateInputValue(value: string): void {
     if (this.elements.input) {
-      this.elements.input.textContent = value || this.config.placeholder || '';
+      const displayText = value || this.config.placeholder || 'Select...';
+      const isPlaceholder =
+        displayText === (this.config.placeholder || 'Select...');
+      console.log('placeholder value', value);
+
+      this.elements.input.textContent = displayText;
+
+      // Toggle placeholder class based on whether we're showing a placeholder
+      if (isPlaceholder) {
+        this.elements.input.classList.add('placeholder');
+      } else {
+        this.elements.input.classList.remove('placeholder');
+      }
     }
   }
 

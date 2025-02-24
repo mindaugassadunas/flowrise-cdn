@@ -230,7 +230,14 @@
                     class="select-tabs"
                     data-select-type="radio"
                   >
-                    <input type="hidden" name="payment-method" value="" />
+                    <input
+                      type="hidden"
+                      name="payment-method"
+                      id="payment-method"
+                      value=""
+                      fl-functional-input
+                      required
+                    />
 
                     <div class="select-tab" data-value="credit_card">
                       <div class="tab-icon">
@@ -290,7 +297,14 @@
                     class="select-tabs"
                     data-select-type="checkbox"
                   >
-                    <input type="hidden" name="selected-features" value="" />
+                    <input
+                      type="hidden"
+                      name="selected-features"
+                      id="selected-features"
+                      value=""
+                      fl-functional-input
+                      required
+                    />
 
                     <div class="select-tab" data-value="analytics">
                       <div class="tab-icon">
@@ -340,6 +354,9 @@
                         </div>
                       </div>
                       <div class="tab-checkbox"></div>
+                    </div>
+                    <div class="error-message" data-error="selected-features">
+                      Please enter a valid email address
                     </div>
                   </div>
                 </div>
