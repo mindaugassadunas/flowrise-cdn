@@ -2,6 +2,7 @@ import { FormConfig } from './models/formTypes';
 import { MultiStepForm } from './core/MultiStepForm';
 import { SingleStepForm } from './core/SingleStepForm';
 import { DateRangeMode } from './components/datepicker/types/datepickerTypes';
+import { getAllCountries } from './components/dropdown/predefined/countries';
 
 const formConfig: FormConfig = {
   path: window.location.pathname,
@@ -61,10 +62,11 @@ const formConfig: FormConfig = {
   fields: {
     country: {
       type: 'dropdown',
-      options: [
-        { value: 'us', label: 'United States' },
-        { value: 'ca', label: 'Canada' },
-      ],
+      // options: [
+      //   { value: 'us', label: 'United States' },
+      //   { value: 'ca', label: 'Canada' },
+      // ],
+      options: getAllCountries(),
       searchable: true,
       placeholder: 'Select a country...',
     },
