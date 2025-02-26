@@ -2,6 +2,7 @@ import { DatepickerConfig } from '../components/datepicker/types/datepickerTypes
 import { DropdownConfig } from '../components/dropdown/types/dropdownTypes';
 import { PhoneFieldConfig } from '../components/phone/types/phoneTypes';
 import { SelectConfig } from '../components/select/types/selectTypes';
+import { URLFieldConfig } from '../components/url/types/urlTypes';
 
 export interface FormConfig {
   path: string;
@@ -9,7 +10,11 @@ export interface FormConfig {
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
   fields?: Record<
     string,
-    DropdownConfig | DatepickerConfig | SelectConfig | PhoneFieldConfig
+    | DropdownConfig
+    | DatepickerConfig
+    | SelectConfig
+    | PhoneFieldConfig
+    | URLFieldConfig
   >;
   redirect?: string;
   hiddenFields?: HiddenFieldConfig[];
@@ -23,7 +28,7 @@ export interface FormConfig {
 }
 
 export interface BaseFieldConfig {
-  type: 'dropdown' | 'datepicker' | 'select' | 'phone';
+  type: 'dropdown' | 'datepicker' | 'select' | 'phone' | 'url';
   required?: boolean;
   label?: string;
   placeholder?: string;

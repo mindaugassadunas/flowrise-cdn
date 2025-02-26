@@ -97,6 +97,13 @@ const testConfig: FormConfig = {
     phoneInput: {
       type: 'phone',
     },
+    websiteUrl: {
+      type: 'url',
+      removeParams: true, // Default: keep URL parameters
+      requiredProtocol: true, // Require http/https
+      allowedProtocols: ['http', 'https'], // Only allow http and https
+      trimUrl: true, // Trim whitespace from URL
+    },
   },
 };
 

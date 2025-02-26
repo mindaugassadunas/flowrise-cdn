@@ -1,4 +1,6 @@
 import { Rules, FieldRuleInterface } from 'just-validate';
+import { URLFieldOptions } from '../components/url/types/urlTypes';
+import { URLValidationRules } from './URLValidationRules';
 
 export class ValidationRulesBuilder {
   /**
@@ -25,6 +27,26 @@ export class ValidationRulesBuilder {
           field.getAttribute('data-validate-message-email') ||
           'Please enter a valid email',
       });
+    }
+
+    // URL validation
+    if (
+      field.type === 'url' ||
+      field.getAttribute('data-fl-element') === 'url'
+    ) {
+      // Get URL field options from data attributes
+      const options: URLFieldOptions = {
+        removeParams: field.getAttribute('data-url-remove-params') === 'true',
+        requiredProtocol:
+          field.getAttribute('data-url-required-protocol') === 'true',
+        allowedProtocols: field
+          .getAttribute('data-url-allowed-protocols')
+          ?.split(',') || ['http', 'https'],
+        trimUrl: field.getAttribute('data-url-trim') !== 'false', // Default to true
+      };
+
+      const urlRules = URLValidationRules.buildURLRules(field, options);
+      rules.push(...urlRules);
     }
 
     // Number validation with min/max rules
@@ -191,6 +213,24 @@ export class ValidationRulesBuilder {
 
       // Extend with additional cases as needed
       switch (trimmedRule) {
+        case 'url':
+          // Special handling for URL validation
+          if (field instanceof HTMLInputElement) {
+            const options: URLFieldOptions = {
+              removeParams:
+                field.getAttribute('data-url-remove-params') === 'true',
+              requiredProtocol:
+                field.getAttribute('data-url-required-protocol') === 'true',
+              allowedProtocols: field
+                .getAttribute('data-url-allowed-protocols')
+                ?.split(',') || ['http', 'https'],
+              trimUrl: field.getAttribute('data-url-trim') !== 'false', // Default to true
+            };
+
+            const urlRules = URLValidationRules.buildURLRules(field, options);
+            rules.push(...urlRules);
+          }
+          break;
         // case 'customRegexp': {
         //   const pattern = field.getAttribute('data-validate-pattern') || '';
         //   rules.push({

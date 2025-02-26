@@ -9,6 +9,9 @@ import { PhoneFieldConfig } from '../components/phone/types/phoneTypes';
 import { createSelect } from '../components/select/select';
 import { SelectTabs } from '../components/select/SelectTabs';
 import { BaseField, BaseFieldConfig } from '../models/formTypes';
+import { createURLField } from '../components/url/url';
+import { URLFieldConfig } from '../components/url/types/urlTypes';
+import { URLField } from '../components/url/URLField';
 
 export class FormFieldFactory {
   private static fieldMap: Map<string, BaseField> = new Map();
@@ -16,15 +19,20 @@ export class FormFieldFactory {
   static createField(
     element: HTMLElement,
     config: BaseFieldConfig,
-  ): BaseDropdown | Datepicker | SelectTabs | PhoneField | null {
+  ): BaseDropdown | Datepicker | SelectTabs | PhoneField | URLField | null {
     const fieldId = element.id;
     if (!fieldId) {
       console.warn('Field element missing ID', element);
       return null;
     }
 
-    let field: BaseDropdown | Datepicker | SelectTabs | PhoneField | null =
-      null;
+    let field:
+      | BaseDropdown
+      | Datepicker
+      | SelectTabs
+      | PhoneField
+      | URLField
+      | null = null;
 
     switch (config.type) {
       case 'dropdown':
@@ -41,6 +49,9 @@ export class FormFieldFactory {
         if (config.type === 'phone') {
           field = createPhoneField(element, config as PhoneFieldConfig);
         }
+        break;
+      case 'url':
+        field = createURLField(element, config as URLFieldConfig);
         break;
       default:
         console.warn(`Unsupported field type: ${config.type}`);
