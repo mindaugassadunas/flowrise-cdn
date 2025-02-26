@@ -6,8 +6,36 @@ export class ValidationRulesBuilder {
   /**
    * Build automatic validation rules based on the field attributes.
    */
-  static buildAutomaticRules(field: HTMLInputElement): FieldRuleInterface[] {
+  static buildAutomaticRules(
+    field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+  ): FieldRuleInterface[] {
     const rules: FieldRuleInterface[] = [];
+
+    // Special handling for textareas with required attribute
+    if (
+      field instanceof HTMLTextAreaElement &&
+      (field.required || field.hasAttribute('required'))
+    ) {
+      console.log('TEXTAREA IS REQUIRED');
+      // Replace the standard 'required' rule with a custom f
+      // unction for textareas
+      rules.push({
+        rule: 'function' as Rules,
+        validator: (value: string | boolean): boolean => {
+          // Convert to string in case we get a boolean
+          const stringValue = String(value || '');
+          // Check if the value is not empty after trimming
+          return stringValue.trim().length > 0;
+        },
+        errorMessage:
+          field.getAttribute('data-validate-message-required') ||
+          'This field is required',
+      });
+
+      // We've handled the required validation manually, now continue with other validations
+      // but skip adding the standard 'required' rule
+      return rules;
+    }
 
     // Required validation
     if (field.required || field.hasAttribute('required')) {
@@ -34,19 +62,20 @@ export class ValidationRulesBuilder {
       field.type === 'url' ||
       field.getAttribute('data-fl-element') === 'url'
     ) {
-      // Get URL field options from data attributes
-      const options: URLFieldOptions = {
-        removeParams: field.getAttribute('data-url-remove-params') === 'true',
-        requiredProtocol:
-          field.getAttribute('data-url-required-protocol') === 'true',
-        allowedProtocols: field
-          .getAttribute('data-url-allowed-protocols')
-          ?.split(',') || ['http', 'https'],
-        trimUrl: field.getAttribute('data-url-trim') !== 'false', // Default to true
-      };
+      if (field instanceof HTMLInputElement) {
+        const options: URLFieldOptions = {
+          removeParams: field.getAttribute('data-url-remove-params') === 'true',
+          requiredProtocol:
+            field.getAttribute('data-url-required-protocol') === 'true',
+          allowedProtocols: field
+            .getAttribute('data-url-allowed-protocols')
+            ?.split(',') || ['http', 'https'],
+          trimUrl: field.getAttribute('data-url-trim') !== 'false',
+        };
 
-      const urlRules = URLValidationRules.buildURLRules(field, options);
-      rules.push(...urlRules);
+        const urlRules = URLValidationRules.buildURLRules(field, options);
+        rules.push(...urlRules);
+      }
     }
 
     // Number validation with min/max rules

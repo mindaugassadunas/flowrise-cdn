@@ -153,15 +153,15 @@ export class MultiStepForm extends BaseForm {
 
     const currentSlide = this.swiper.slides[this.swiper.activeIndex];
     // Filter visible fields only
-    const fields = Array.from(currentSlide.querySelectorAll('input')).filter(
-      field => {
-        if (!field.id) return false;
-        const shouldValidate = this.stateManager.shouldValidateField(field.id);
-        console.log('shouldValidate', field.id, shouldValidate);
+    const fields = Array.from(
+      currentSlide.querySelectorAll('input, textarea'),
+    ).filter(field => {
+      if (!field.id) return false;
+      const shouldValidate = this.stateManager.shouldValidateField(field.id);
+      console.log('shouldValidate', field.id, shouldValidate);
 
-        return shouldValidate;
-      },
-    );
+      return shouldValidate;
+    });
 
     // Log current state
     console.log(

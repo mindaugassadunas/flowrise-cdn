@@ -52,6 +52,7 @@ export class FormValidator {
 
   public init(form: HTMLFormElement): void {
     const allFields = form.querySelectorAll('input, select, textarea');
+    console.log('validator init', allFields);
 
     allFields.forEach(field => {
       if (!field.id) {
@@ -73,6 +74,7 @@ export class FormValidator {
       }
 
       // Add field to validator if it has rules
+      console.log(field, allRules);
       if (allRules.length > 0) {
         this.validator.addField(`#${field.id}`, allRules);
       }
