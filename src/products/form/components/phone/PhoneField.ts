@@ -85,7 +85,75 @@ export class PhoneField {
       const countryData = this.iti.getSelectedCountryData();
       this.config.onCountryChange?.(countryData);
     });
+
+    // Add keydown event listener to prevent letters
+    this.input.addEventListener('keydown', this.preventLetters);
+
+    // Add input event listener to filter out any letters that might get through
+    this.input.addEventListener('input', this.filterLetters);
   }
+
+  private preventLetters = (event: KeyboardEvent): void => {
+    // Allow: backspace, delete, tab, escape, enter, ctrl+A, ctrl+C, ctrl+V, home, end, left, right
+    const allowedKeys = [
+      'Backspace',
+      'Delete',
+      'Tab',
+      'Escape',
+      'Enter',
+      'Home',
+      'End',
+      'ArrowLeft',
+      'ArrowRight',
+      '+',
+      '*',
+      '#',
+      '-',
+      ' ',
+      '(',
+      ')',
+      '.',
+    ];
+
+    // Allow keyboard shortcuts
+    if (
+      (event.ctrlKey &&
+        ['a', 'c', 'v', 'x'].includes(event.key.toLowerCase())) ||
+      allowedKeys.includes(event.key)
+    ) {
+      return;
+    }
+
+    // Allow numbers
+    if (/^\d$/.test(event.key)) {
+      return;
+    }
+
+    // Prevent the default action for any other key
+    event.preventDefault();
+  };
+
+  private filterLetters = (): void => {
+    if (!this.input) return;
+
+    // Save cursor position
+    const cursorPos = this.input.selectionStart;
+
+    // Filter the input value to keep only allowed characters
+    const originalValue = this.input.value;
+    const filteredValue = originalValue.replace(/[^\d\+\*\#\-\s\(\)\.]/g, '');
+
+    // Only update if there's a change to avoid unnecessary re-renders
+    if (originalValue !== filteredValue) {
+      this.input.value = filteredValue;
+
+      // Adjust cursor position if characters were removed
+      const posDiff = originalValue.length - filteredValue.length;
+      if (cursorPos !== null) {
+        this.input.setSelectionRange(cursorPos - posDiff, cursorPos - posDiff);
+      }
+    }
+  };
 
   public validateNumber(): boolean {
     if (!this.input || !this.iti) return false;
