@@ -20,6 +20,7 @@ export class PhoneField {
   private init(): void {
     try {
       this.input = this.element as HTMLInputElement;
+      console.log('PHONE INPUT', this.input);
 
       if (!this.input) {
         throw new Error(`Phone input element not found: ${this.input}`);

@@ -1,4 +1,5 @@
-import 'intl-tel-input/build/css/intlTelInput.css';
+// import 'intl-tel-input/build/css/intlTelInput.css';
+import './styles.css';
 import { PhoneField } from './PhoneField';
 import { PhoneFieldConfig } from './types/phoneTypes';
 

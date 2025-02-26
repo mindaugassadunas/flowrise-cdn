@@ -72,6 +72,7 @@
 
 [fl-part='dropdown-menu'] {
   position: absolute;
+  flex-direction: column;
   top: 100%;
   left: 0;
   right: 0;
@@ -114,14 +115,14 @@
   overflow-y: auto;
 }
 
-.dropdown-item {
+.form_dropdown_option {
   padding: 8px 12px;
   cursor: pointer;
   font-size: 14px;
 }
 
-.dropdown-item:hover,
-.dropdown-item.is-active {
+.form_dropdown_option:hover,
+.form_dropdown_option.is-active {
   background-color: #f1f5f9;
 }
 
@@ -164,7 +165,7 @@
     max-height: 50vh; /* Limit height on mobile */
   }
 
-  .dropdown-item {
+  .form_dropdown_option {
     padding: 12px 16px;
     min-height: 44px;
   }

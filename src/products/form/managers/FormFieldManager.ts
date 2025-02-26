@@ -13,6 +13,7 @@ export class FormFieldManager {
   }
 
   private init(): void {
+    console.log('formfieldmanager', this.config.fields);
     if (!this.config.fields) return;
     // Initialize all configured fields
     Object.entries(this.config.fields).forEach(([fieldId, fieldConfig]) => {

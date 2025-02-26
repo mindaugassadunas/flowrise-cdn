@@ -1,26 +1,3 @@
-// import { defineConfig } from 'vite'
-// import { resolve, dirname } from 'path'
-// import { fileURLToPath } from 'url'
-
-// const __dirname = dirname(fileURLToPath(import.meta.url))
-
-// export default defineConfig({
-//   build: {
-//     rollupOptions: {
-//       input: {
-//         'main': resolve(__dirname, 'src/main.ts'),
-//       },
-//       output: {
-//         entryFileNames: '[name].js',
-//         format: 'iife',
-//         name: 'WebflowExt[name]',
-//       }
-//     },
-//     minify: 'esbuild',
-//     sourcemap: true
-//   }
-// })
-
 import { defineConfig } from 'vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -39,22 +16,29 @@ export default defineConfig({
       output: {
         dir: 'dist',
         entryFileNames: 'webflow-ext-[name].js',
+        assetFileNames: 'assets/[name]-[hash][extname]',
         format: 'iife',
         name: 'WebflowExt',
         globals: {
-          swiper: 'Swiper',
-          'just-validate': 'JustValidate',
+          // swiper: 'Swiper',
         },
       },
       // External dependencies
-      external: ['swiper', 'just-validate'],
+      // external: ['swiper'],
     },
     minify: 'esbuild',
     sourcemap: true,
+    assetsInlineLimit: 1024 * 1024,
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+    },
+  },
+  server: {
+    cors: {
+      origin: '*',
+      methods: ['GET'],
     },
   },
 });

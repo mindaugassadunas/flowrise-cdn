@@ -41,7 +41,7 @@ export class BaseDropdown {
   private moveToPortal(): void {
     if (!this.portal || !this.elements.menu) return;
 
-    this.elements.menu.style.display = 'block';
+    this.elements.menu.style.display = 'flex';
     this.portal.mount(this.elements.menu);
   }
 
@@ -178,7 +178,7 @@ export class BaseDropdown {
       this.updateInputValue(this.config.placeholder);
     }
     window.addEventListener('resize', this.updateMenuPosition);
-    window.addEventListener('scroll', this.updateMenuPosition, true);
+    // window.addEventListener('scroll', this.updateMenuPosition, true);
   }
 
   private initializeButtons(): void {

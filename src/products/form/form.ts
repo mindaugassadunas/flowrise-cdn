@@ -4,7 +4,7 @@ import { SingleStepForm } from './core/SingleStepForm';
 import { DateRangeMode } from './components/datepicker/types/datepickerTypes';
 import { getAllCountries } from './components/dropdown/predefined/countries';
 
-const formConfig: FormConfig = {
+const testConfig: FormConfig = {
   path: window.location.pathname,
   action: 'https://hook.eu1.make.com/ykjl2vvn4s3m9nfnkqwc5fr3gv95xb6t',
   successRedirect: '/confirmation.html',
@@ -100,21 +100,88 @@ const formConfig: FormConfig = {
   },
 };
 
-function initForm(
-  wrapper: HTMLElement,
-  form: HTMLFormElement,
-  formConfig: FormConfig,
-) {
+const applicationConfig: FormConfig = {
+  path: window.location.pathname,
+  action: 'https://hook.eu1.make.com/ykjl2vvn4s3m9nfnkqwc5fr3gv95xb6t',
+  successRedirect: '/confirmation.html',
+  redirectParams: [
+    {
+      key: 'course',
+      value: 'DA',
+    },
+    {
+      key: 'utm',
+      fieldId: 'utm_source',
+    },
+  ],
+  hiddenFields: [
+    {
+      name: 'utm_source',
+      cookieKey: 'utm_source',
+      storageKey: 'utm_source',
+      defaultValue: '',
+    },
+  ],
+  fields: {
+    'residency-field': {
+      type: 'dropdown',
+      options: getAllCountries(),
+      searchable: true,
+      placeholder: 'Select a country...',
+    },
+    'country-field': {
+      type: 'dropdown',
+      options: getAllCountries(),
+      searchable: true,
+      placeholder: 'Select a country...',
+    },
+    'datepicker-field': {
+      type: 'datepicker',
+      format: 'YYYY-MM-DD',
+      allowInput: true,
+      rangeMode: DateRangeMode.PAST,
+      placeholder: 'Select date...',
+      showTodayButton: false,
+    },
+    'select-field': {
+      type: 'select',
+    },
+    'multi-select-field': {
+      type: 'select',
+    },
+    'phone-input': {
+      type: 'phone',
+    },
+  },
+};
+
+function initForm(wrapper: HTMLElement, form: HTMLFormElement) {
+  let formConfig;
+  const formConfigType = wrapper.getAttribute('fl-form-config');
+  console.log('config type', formConfigType);
+  switch (formConfigType) {
+    case 'application':
+      formConfig = applicationConfig;
+      break;
+    default:
+      formConfig = testConfig;
+      break;
+  }
+
   const type = wrapper.getAttribute('fl-type');
+  console.log('form type', type);
   switch (type) {
     case 'multi-step':
+      console.log('form type proceed - multi');
       return new MultiStepForm(wrapper, form, formConfig);
     default:
+      console.log('form type proceed - single');
       return new SingleStepForm(wrapper, form, formConfig);
   }
 }
 
 document.querySelectorAll('[fl="form"]').forEach(wrapper => {
   const form = wrapper.querySelector('form') as HTMLFormElement;
-  initForm(wrapper as HTMLElement, form, formConfig);
+  console.log('wrapper', wrapper);
+  initForm(wrapper as HTMLElement, form);
 });

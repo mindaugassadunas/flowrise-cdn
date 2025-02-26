@@ -28,6 +28,7 @@ export class FormFieldFactory {
 
     switch (config.type) {
       case 'dropdown':
+        console.log('ITS DROPDOWN');
         field = createDropdown(element, config);
         break;
       case 'datepicker':

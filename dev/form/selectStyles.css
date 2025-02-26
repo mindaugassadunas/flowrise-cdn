@@ -24,7 +24,7 @@
   box-shadow: 0 0 0 2px #3b82f6;
 }
 
-.select-tab.selected {
+.select-tab.is-selected {
   border-color: #3b82f6;
   background-color: #eff6ff;
 }
@@ -34,7 +34,7 @@
   color: #64748b;
 }
 
-.select-tab.selected .tab-icon {
+.select-tab.is-selected .tab-icon {
   color: #3b82f6;
 }
 
@@ -62,11 +62,11 @@
   transition: all 0.2s ease;
 }
 
-.select-tab.selected .tab-checkbox {
+.select-tab.is-selected .tab-checkbox {
   border-color: #3b82f6;
 }
 
-.select-tab.selected .tab-checkbox::after {
+.select-tab.is-selected .tab-checkbox::after {
   content: '';
   position: absolute;
   top: 50%;

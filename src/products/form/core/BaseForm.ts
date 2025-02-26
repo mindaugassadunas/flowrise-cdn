@@ -54,8 +54,9 @@ export abstract class BaseForm {
   protected init(): void {
     this.createHiddenFields();
     this.createSystemFields();
+    console.log('baseform init');
     this.fieldManager = new FormFieldManager(this.form, this.config);
-
+    console.log(this.fieldManager);
     // Prefill if needed
     if (this.config.storage) {
       StorageManager.prefillForm(this.form, this.config.storage);

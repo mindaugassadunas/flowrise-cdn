@@ -29,9 +29,26 @@ export class Portal {
     this.originalParent = element.parentElement;
     this.originalNextSibling = element.nextSibling;
 
+    this.copyColorModeAttribute(element);
+
     // Move to portal
     this.portalContainer.appendChild(element);
     document.body.appendChild(this.portalContainer);
+  }
+
+  private copyColorModeAttribute(element: HTMLElement): void {
+    // Find the closest ancestor with a color-mode attribute
+    let ancestor = element.parentElement;
+    while (ancestor) {
+      if (ancestor.hasAttribute('color-mode')) {
+        this.portalContainer.setAttribute(
+          'color-mode',
+          ancestor.getAttribute('color-mode') || '',
+        );
+        break;
+      }
+      ancestor = ancestor.parentElement;
+    }
   }
 
   unmount(): HTMLElement | null {
@@ -65,24 +82,30 @@ export class Portal {
     const portalRect = this.portalContainer.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
+    // Account for scroll position
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
     let top: number;
     let actualPlacement = placement;
 
     if (placement === 'auto') {
       const spaceBelow = windowHeight - referenceRect.bottom;
-      const spaceAbove = referenceRect.top;
-      actualPlacement = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+      // const spaceAbove = referenceRect.top;
+      // actualPlacement = spaceBelow >= spaceAbove ? 'bottom' : 'top';
+      const requiredSpace = portalRect.height + 50; // Portal height plus 100px
+      actualPlacement = spaceBelow >= requiredSpace ? 'bottom' : 'top';
     }
 
     if (actualPlacement === 'bottom') {
-      top = referenceRect.bottom + offset;
+      top = referenceRect.bottom + scrollY + offset;
     } else {
-      top = referenceRect.top - portalRect.height - offset;
+      top = referenceRect.top + scrollY - portalRect.height - offset;
     }
 
     Object.assign(this.portalContainer.style, {
       top: `${top}px`,
-      left: `${referenceRect.left}px`,
+      left: `${referenceRect.left + scrollX}px`,
       width: `${referenceRect.width}px`,
     });
 

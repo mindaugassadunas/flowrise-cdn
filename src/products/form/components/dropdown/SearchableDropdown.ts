@@ -84,7 +84,7 @@ export class SearchableDropdown extends CustomDropdown {
       const optionElement = document.createElement('div');
       optionElement.setAttribute('role', 'option');
       optionElement.setAttribute('aria-selected', 'false');
-      optionElement.classList.add('dropdown-item');
+      optionElement.classList.add('form_dropdown_option');
       optionElement.textContent = option.label;
       optionElement.addEventListener('click', () => this.selectOption(option));
       optionElement.addEventListener('mouseover', () => {

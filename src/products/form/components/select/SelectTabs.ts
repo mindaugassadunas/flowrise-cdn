@@ -9,6 +9,8 @@ export class SelectTabs {
     this.container = container;
     this.isMultiple = container.dataset.selectType === 'checkbox';
 
+    console.log('SELECT', container.dataset.selectType);
+
     // Find hidden input
     this.hiddenInput = container.querySelector(
       'input[type="hidden"]',
@@ -19,7 +21,7 @@ export class SelectTabs {
 
     // Find all tabs
     this.tabs = container.querySelectorAll(
-      '.select-tab',
+      '[fl-part="select-tab"]',
     ) as NodeListOf<HTMLElement>;
     this.selectedValues = new Set<string>();
 
@@ -77,7 +79,7 @@ export class SelectTabs {
 
   private handleKeyDown(e: KeyboardEvent): void {
     const target = e.target as HTMLElement;
-    if (!target.classList.contains('select-tab')) return;
+    if (target.getAttribute('fl-part') !== 'select-tab') return;
 
     switch (e.key) {
       case ' ':
@@ -115,10 +117,10 @@ export class SelectTabs {
     this.tabs.forEach(tab => {
       const value = tab.dataset.value;
       if (value && this.selectedValues.has(value)) {
-        tab.classList.add('selected');
+        tab.classList.add('is-selected');
         tab.setAttribute('aria-checked', 'true');
       } else {
-        tab.classList.remove('selected');
+        tab.classList.remove('is-selected');
         tab.setAttribute('aria-checked', 'false');
       }
     });
