@@ -11,32 +11,6 @@ export class ValidationRulesBuilder {
   ): FieldRuleInterface[] {
     const rules: FieldRuleInterface[] = [];
 
-    // Special handling for textareas with required attribute
-    if (
-      field instanceof HTMLTextAreaElement &&
-      (field.required || field.hasAttribute('required'))
-    ) {
-      console.log('TEXTAREA IS REQUIRED');
-      // Replace the standard 'required' rule with a custom f
-      // unction for textareas
-      rules.push({
-        rule: 'function' as Rules,
-        validator: (value: string | boolean): boolean => {
-          // Convert to string in case we get a boolean
-          const stringValue = String(value || '');
-          // Check if the value is not empty after trimming
-          return stringValue.trim().length > 0;
-        },
-        errorMessage:
-          field.getAttribute('data-validate-message-required') ||
-          'This field is required',
-      });
-
-      // We've handled the required validation manually, now continue with other validations
-      // but skip adding the standard 'required' rule
-      return rules;
-    }
-
     // Required validation
     if (field.required || field.hasAttribute('required')) {
       rules.push({
