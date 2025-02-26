@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="datepickerStyle.css" />
     <link rel="stylesheet" href="selectStyles.css" />
     <link rel="stylesheet" href="phoneStyle.css" />
+    <link rel="stylesheet" href="fileUploadStyles.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
@@ -243,12 +244,14 @@
                       required
                     />
                   </div>
+
                   <!-- Phone  -->
                   <div class="form-group">
                     <label for="phoneInput">Phone</label>
                     <input type="tel" id="phoneInput" name="phone" required />
                     <div class="error-message" data-error="phoneInput"></div>
                   </div>
+
                   <!-- Datepicker -->
                   <div class="form-group" id="datepicker" fl="datepicker">
                     <input
@@ -260,6 +263,9 @@
                       required
                     />
                   </div>
+
+                  <!-- File upload  -->
+                  <div id="fileUpload" class="form-group"></div>
                 </div>
 
                 <!-- Step 2: Confirmation -->

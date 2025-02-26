@@ -102,6 +102,31 @@ export class ValidationRulesBuilder {
       });
     }
 
+    // Fileupload field
+    if (field.getAttribute('data-fl-element') === 'fileupload') {
+      // File upload validation
+      if (field.required || field.hasAttribute('required')) {
+        rules.push({
+          rule: 'function' as Rules,
+          validator: (value: any): boolean => {
+            if (!value) return !field.required;
+
+            // For file uploads, value is typically a FileList or array of files
+            if (value instanceof FileList || Array.isArray(value)) {
+              return value.length > 0;
+            }
+
+            return false;
+          },
+          errorMessage:
+            field.getAttribute('data-validate-message-required') ||
+            'Please select at least one file',
+        });
+      }
+
+      return rules; // Return early since we've handled all the validation for file uploads
+    }
+
     // Length validations
     const minLength = field.getAttribute('minlength');
     if (minLength !== null) {

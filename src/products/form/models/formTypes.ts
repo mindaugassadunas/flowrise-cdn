@@ -1,5 +1,6 @@
 import { DatepickerConfig } from '../components/datepicker/types/datepickerTypes';
 import { DropdownConfig } from '../components/dropdown/types/dropdownTypes';
+import { FileUploadConfig } from '../components/file/types/fileTypes';
 import { PhoneFieldConfig } from '../components/phone/types/phoneTypes';
 import { SelectConfig } from '../components/select/types/selectTypes';
 import { URLFieldConfig } from '../components/url/types/urlTypes';
@@ -15,6 +16,7 @@ export interface FormConfig {
     | SelectConfig
     | PhoneFieldConfig
     | URLFieldConfig
+    | FileUploadConfig
   >;
   redirect?: string;
   hiddenFields?: HiddenFieldConfig[];
@@ -28,7 +30,7 @@ export interface FormConfig {
 }
 
 export interface BaseFieldConfig {
-  type: 'dropdown' | 'datepicker' | 'select' | 'phone' | 'url';
+  type: 'dropdown' | 'datepicker' | 'select' | 'phone' | 'url' | 'fileupload';
   required?: boolean;
   label?: string;
   placeholder?: string;

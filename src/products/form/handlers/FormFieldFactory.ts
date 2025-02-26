@@ -12,6 +12,9 @@ import { BaseField, BaseFieldConfig } from '../models/formTypes';
 import { createURLField } from '../components/url/url';
 import { URLFieldConfig } from '../components/url/types/urlTypes';
 import { URLField } from '../components/url/URLField';
+import { createFileUpload } from '../components/file/FileUpload';
+import { FileUploadConfig } from '../components/file/types/fileTypes';
+import { FileUpload } from '../components/file/FileUploadField';
 
 export class FormFieldFactory {
   private static fieldMap: Map<string, BaseField> = new Map();
@@ -19,7 +22,14 @@ export class FormFieldFactory {
   static createField(
     element: HTMLElement,
     config: BaseFieldConfig,
-  ): BaseDropdown | Datepicker | SelectTabs | PhoneField | URLField | null {
+  ):
+    | BaseDropdown
+    | Datepicker
+    | SelectTabs
+    | PhoneField
+    | URLField
+    | FileUpload
+    | null {
     const fieldId = element.id;
     if (!fieldId) {
       console.warn('Field element missing ID', element);
@@ -32,6 +42,7 @@ export class FormFieldFactory {
       | SelectTabs
       | PhoneField
       | URLField
+      | FileUpload
       | null = null;
 
     switch (config.type) {
@@ -52,6 +63,9 @@ export class FormFieldFactory {
         break;
       case 'url':
         field = createURLField(element, config as URLFieldConfig);
+        break;
+      case 'fileupload':
+        field = createFileUpload(element, config as FileUploadConfig);
         break;
       default:
         console.warn(`Unsupported field type: ${config.type}`);

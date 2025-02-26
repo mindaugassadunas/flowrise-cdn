@@ -104,6 +104,16 @@ const testConfig: FormConfig = {
       allowedProtocols: ['http', 'https'], // Only allow http and https
       trimUrl: true, // Trim whitespace from URL
     },
+    fileUpload: {
+      type: 'fileupload',
+      maxFileSize: 10 * 1024 * 1024, // 10MB
+      allowedTypes: ['image/*', 'application/pdf', 'application/zip'],
+      multiple: true,
+      required: true,
+      // Optional endpoint for direct file uploads
+      // If not provided, files will be submitted with the form
+      endpoint: 'https://your-upload-endpoint.com/upload',
+    },
   },
 };
 
