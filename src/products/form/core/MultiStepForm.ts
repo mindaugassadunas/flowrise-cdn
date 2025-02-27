@@ -40,6 +40,8 @@ export class MultiStepForm extends BaseForm {
         },
       },
     });
+    console.log('SWIPER INITIALIZED');
+    console.log(this.swiper);
   }
 
   protected setupEventListeners(): void {
@@ -216,13 +218,17 @@ export class MultiStepForm extends BaseForm {
   }
 
   private updateNavigationButtons(currentPosition: number): void {
-    const globalNav = document.getElementById('globalNavigation');
+    const globalNav = document.querySelector('[fl-part="global-navigation"]');
     if (!globalNav) return;
 
-    const prevBtn = globalNav.querySelector('#prevBtn') as HTMLButtonElement;
-    const nextBtn = globalNav.querySelector('#nextBtn') as HTMLButtonElement;
+    const prevBtn = globalNav.querySelector(
+      '[fl-part="prev-btn"]',
+    ) as HTMLButtonElement;
+    const nextBtn = globalNav.querySelector(
+      '[fl-part="next-btn"]',
+    ) as HTMLButtonElement;
     const submitBtn = globalNav.querySelector(
-      '#submitBtn',
+      '[fl-part="submit-btn"]',
     ) as HTMLButtonElement;
 
     // Simple position-based checks
