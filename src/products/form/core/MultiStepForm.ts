@@ -98,14 +98,17 @@ export class MultiStepForm extends BaseForm {
 
   protected attachEventListeners(): void {
     // Global navigation buttons
-    document.querySelectorAll('#globalNavigation button').forEach(button => {
-      button.addEventListener('click', async e => {
-        const btn = e.currentTarget as HTMLButtonElement;
-        if (btn.id === 'prevBtn') this.previousStep();
-        if (btn.id === 'nextBtn') await this.nextStep();
-        if (btn.id === 'submitBtn') this.handleSubmit(e);
+    document
+      .querySelectorAll('[fl-part="global-navigation"] button')
+      .forEach(button => {
+        button.addEventListener('click', async e => {
+          const btn = e.currentTarget as HTMLButtonElement;
+          if (btn.getAttribute('fl-part') === 'prev-btn') this.previousStep();
+          if (btn.getAttribute('fl-part') === 'next-btn') await this.nextStep();
+          if (btn.getAttribute('fl-part') === 'submit-btn')
+            this.handleSubmit(e);
+        });
       });
-    });
 
     // Step-specific navigation buttons
     document

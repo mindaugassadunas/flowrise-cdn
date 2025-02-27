@@ -28,7 +28,6 @@ export class FileUpload implements BaseField {
   }
 
   private init(): void {
-    console.log('INIT FILE UPLOAD');
     // Create the necessary DOM structure
     this.element.classList.add('upload-container');
     this.element.setAttribute('data-fl-element', 'fileupload');

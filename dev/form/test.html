@@ -446,20 +446,23 @@
                   </div>
                 </div>
               </div>
-
-              <div class="global-navigation">
-                <div class="form-progress">
-                  Step <span id="currentStep">1</span> of 3
-                </div>
-                <div class="form-navigation" id="globalNavigation">
-                  <button type="button" id="prevBtn" style="display: none">
-                    Previous
-                  </button>
-                  <button type="button" id="nextBtn">Next</button>
-                  <button type="submit" id="submitBtn" style="display: none">
-                    Submit
-                  </button>
-                </div>
+            </div>
+            <div class="global-navigation">
+              <div class="form-progress">
+                Step <span id="currentStep">1</span> of 3
+              </div>
+              <div class="form-navigation" fl-part="global-navigation">
+                <button type="button" fl-part="prev-btn" style="display: none">
+                  Previous
+                </button>
+                <button type="button" fl-part="next-btn">Next</button>
+                <button
+                  type="submit"
+                  fl-part="submit-btn"
+                  style="display: none"
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </form>
