@@ -16,12 +16,12 @@ export class FormValidator {
     this.validator = new JustValidate(formSelector, {
       validateBeforeSubmitting: false,
       focusInvalidField: true,
-      errorFieldCssClass: ['error'],
+      errorFieldCssClass: ['is-error'],
       errorLabelStyle: {
         display: 'block',
       },
-      errorLabelCssClass: ['error-message'],
-      successLabelCssClass: ['success'],
+      errorLabelCssClass: ['form_error-message'],
+      successLabelCssClass: ['form_success-message'],
       ...options,
     });
 

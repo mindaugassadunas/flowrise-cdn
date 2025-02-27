@@ -43,19 +43,19 @@
   transition: width 0.3s ease;
 }
 
-.error-message {
+.form_error-message {
   display: none;
   color: red;
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
 
-.error .error-message {
+.is-error .form_error-message {
   display: block;
 }
 
-.form-group input.error,
-.form-group select.error {
+.form-group input.is-error,
+.form-group select.is-error {
   border-color: red;
 }
 

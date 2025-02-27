@@ -38,6 +38,15 @@ export class MultiStepForm extends BaseForm {
         slideChange: () => {
           this.updateUI();
         },
+        init: function () {
+          // Reset flex-direction to row for proper horizontal sliding
+          const swiperWrappers = document.querySelectorAll('.swiper-wrapper');
+          swiperWrappers.forEach(swiperWrapper => {
+            if (swiperWrapper instanceof HTMLElement) {
+              swiperWrapper.style.flexDirection = 'row';
+            }
+          });
+        },
       },
     });
     console.log('SWIPER INITIALIZED');
