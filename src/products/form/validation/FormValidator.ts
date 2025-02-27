@@ -146,18 +146,36 @@ export class FormValidator {
       // Update validation state
       if (isValid) {
         this.invalidFields.delete(fieldId);
-        element.classList.remove('error');
-        element.classList.add('success');
+        element.classList.remove('is-error');
+        element.classList.add('is-success');
       } else {
         this.invalidFields.add(fieldId);
-        element.classList.remove('success');
-        element.classList.add('error');
+        element.classList.remove('is-success');
+        element.classList.add('is-error');
       }
 
       // Update error message display
-      const errorElement = document.querySelector(`[data-error="${fieldId}"]`);
+      const errorElement = document.querySelector(
+        `[data-error="${fieldId}"]`,
+      ) as HTMLElement;
       if (errorElement) {
-        errorElement.classList.toggle('visible', !isValid);
+        // Make sure the error message is visible when invalid
+        if (!isValid) {
+          errorElement.style.display = 'block';
+
+          // Set appropriate error message based on the validation error type
+          if (!element.value && element.required) {
+            errorElement.textContent =
+              field.getAttribute('data-validate-message-required') ||
+              'Phone number is required';
+          } else {
+            errorElement.textContent =
+              field.getAttribute('data-validate-message-phone') ||
+              'Enter a valid phone number';
+          }
+        } else {
+          errorElement.style.display = 'none';
+        }
       }
 
       return isValid;

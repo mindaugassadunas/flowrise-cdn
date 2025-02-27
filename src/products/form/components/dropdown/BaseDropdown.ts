@@ -97,6 +97,7 @@ export class BaseDropdown {
   }
 
   private validateAndInitializeElements(): void {
+    console.log('this dropdown', this.element);
     const input = this.element.querySelector('[fl-part="dropdown-input"]');
     const menu = this.element.querySelector('[fl-part="dropdown-menu"]');
     const toggle = this.element.querySelector('[fl-part="dropdown-toggle"]');
