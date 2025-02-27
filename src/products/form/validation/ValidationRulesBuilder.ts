@@ -27,7 +27,7 @@ export class ValidationRulesBuilder {
         rule: 'email' as Rules,
         errorMessage:
           field.getAttribute('data-validate-message-email') ||
-          'Please enter a valid email',
+          'Enter a valid email',
       });
     }
 
@@ -58,7 +58,7 @@ export class ValidationRulesBuilder {
         rule: 'number' as Rules,
         errorMessage:
           field.getAttribute('data-validate-message-number') ||
-          'Please enter a valid number',
+          'Enter a valid number',
       });
 
       const min = field.getAttribute('min');
@@ -98,7 +98,7 @@ export class ValidationRulesBuilder {
         },
         errorMessage:
           field.getAttribute('data-validate-message-phone') ||
-          'Please enter a valid phone number',
+          'Enter a valid phone number',
       });
     }
 
@@ -120,7 +120,7 @@ export class ValidationRulesBuilder {
           },
           errorMessage:
             field.getAttribute('data-validate-message-required') ||
-            'Please select at least one file',
+            'Select at least one file',
         });
       }
 
