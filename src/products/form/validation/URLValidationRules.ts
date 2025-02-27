@@ -100,8 +100,7 @@ export class URLValidationRules {
         }
       },
       errorMessage:
-        field.getAttribute('data-validate-message-url') ||
-        'Please enter a valid URL with a domain suffix (e.g., .com)',
+        field.getAttribute('data-validate-message-url') || 'Enter a valid URL',
     });
 
     // Protocol specific validation if required
