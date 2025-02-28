@@ -29,6 +29,7 @@ export class MultiStepForm extends BaseForm {
     this.swiper = new Swiper('.swiper', {
       allowTouchMove: false,
       effect: 'fade',
+      speed: 0,
       direction: 'horizontal',
       slidesPerView: 1,
       fadeEffect: {
@@ -252,6 +253,15 @@ export class MultiStepForm extends BaseForm {
     prevBtn.style.display = isFirstVisible ? 'none' : 'block';
     nextBtn.style.display = isLastVisible ? 'none' : 'block';
     submitBtn.style.display = isLastVisible ? 'block' : 'none';
+
+    // Handle first-slide-only content visibility
+    document
+      .querySelectorAll('[data-visible-on-first-slide]')
+      .forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.style.display = isFirstVisible ? '' : 'none';
+        }
+      });
 
     // Update next button text based on current slide
     if (nextBtn) {
