@@ -253,6 +253,29 @@ export class MultiStepForm extends BaseForm {
     nextBtn.style.display = isLastVisible ? 'none' : 'block';
     submitBtn.style.display = isLastVisible ? 'block' : 'none';
 
+    // Update next button text based on current slide
+    if (nextBtn) {
+      const currentIndex = this.swiper.activeIndex;
+
+      // First priority: Check for slide-specific text
+      const slideSpecificText = nextBtn.getAttribute(
+        `data-text-slide-${currentIndex}`,
+      );
+      console.log('SLIDE SPECIFIC TEXT', slideSpecificText);
+
+      // Second priority: If not first slide and general non-first text exists
+      const allSlidesText = !isFirstVisible
+        ? nextBtn.dataset.textSlideAll
+        : null;
+
+      // Apply the text if either specific or general text exists
+      if (slideSpecificText) {
+        nextBtn.textContent = slideSpecificText;
+      } else if (allSlidesText) {
+        nextBtn.textContent = allSlidesText;
+      }
+    }
+
     // Update total steps display
     const totalStepsElement = this.currentStepElement?.parentElement;
     if (totalStepsElement) {
