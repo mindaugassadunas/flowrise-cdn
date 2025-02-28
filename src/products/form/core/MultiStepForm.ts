@@ -38,6 +38,9 @@ export class MultiStepForm extends BaseForm {
       on: {
         slideChange: () => {
           this.updateUI();
+          if (this.config.scrollToTop === true) {
+            this.scrollToFormTop(this.config.smoothScroll || false);
+          }
         },
         init: function () {
           // Reset flex-direction to row for proper horizontal sliding
@@ -324,6 +327,31 @@ export class MultiStepForm extends BaseForm {
 
     if (nextStep !== undefined) {
       this.swiper.slideTo(nextStep);
+    }
+  }
+
+  private scrollToFormTop(smooth: boolean = false): void {
+    // Check if there's a configured scroll target
+    const scrollTarget = this.config.scrollElement
+      ? document.querySelector(this.config.scrollElement)
+      : this.wrapper;
+
+    if (scrollTarget instanceof HTMLElement) {
+      // If there is a valid element, scroll to its top with some padding
+      const padding = this.config.scrollPadding || 0;
+      const targetPosition =
+        scrollTarget.getBoundingClientRect().top + window.pageYOffset - padding;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    } else {
+      // Fallback to scrolling to the top of the page
+      window.scrollTo({
+        top: 0,
+        behavior: smooth ? 'smooth' : 'auto',
+      });
     }
   }
 

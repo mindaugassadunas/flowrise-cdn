@@ -174,6 +174,7 @@ export const applicationConfig: FormConfig = {
   path: window.location.pathname,
   action: 'https://hook.eu1.make.com/ykjl2vvn4s3m9nfnkqwc5fr3gv95xb6t',
   successRedirect: '/confirmation.html',
+  scrollToTop: true,
   redirectParams: [
     {
       key: 'course',

@@ -27,6 +27,10 @@ export interface FormConfig {
   errorMessage?: string;
   conditionalFields?: ConditionalFieldConfig[];
   conditionalSteps?: ConditionalStepConfig[];
+  scrollToTop?: boolean;
+  scrollElement?: string; // CSS selector for element to scroll to (defaults to form wrapper)
+  scrollPadding?: number; // Padding in pixels from the top (default: 0)
+  smoothScroll?: boolean; // Whether to use smooth scrolling (default: false)
 }
 
 export interface BaseFieldConfig {
