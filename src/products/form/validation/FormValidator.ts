@@ -73,10 +73,22 @@ export class FormValidator {
         allRules = allRules.concat(customRules);
       }
 
-      // Add field to validator if it has rules
-      console.log(field, allRules);
+      // Add field to validator EVEN IF it has no rules
+      // This ensures all fields are registered with JustValidate
       if (allRules.length > 0) {
+        console.log(`Adding field ${field.id} with rules:`, allRules);
         this.validator.addField(`#${field.id}`, allRules);
+      } else {
+        // Add field with a dummy rule that always passes
+        // This ensures the field exists in JustValidate's registry
+        console.log(`Adding field ${field.id} with default pass rule`);
+        this.validator.addField(`#${field.id}`, [
+          {
+            rule: 'function' as Rules,
+            validator: () => true, // Always passes validation
+            errorMessage: '', // No error message needed
+          },
+        ]);
       }
     });
 
@@ -181,6 +193,7 @@ export class FormValidator {
       return isValid;
     }
 
+    console.log('VALIDATING', field, selector);
     const isValid = await this.validator.revalidateField(selector);
 
     if (isValid) {

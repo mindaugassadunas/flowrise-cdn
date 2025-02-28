@@ -41,22 +41,4 @@ export class FormFieldManager {
   getAllFields(): Map<string, BaseField> {
     return this.fields;
   }
-
-  //   async validateAll(): Promise<boolean> {
-  //     const validationResults = await Promise.all(
-  //       Array.from(this.fields.values()).map(field => field.validate()),
-  //     );
-  //     return validationResults.every(result => result);
-  //   }
-
-  //   reset(): void {
-  //     this.fields.forEach(field => field.reset());
-  //   }
-
-  //   destroy(): void {
-  //     this.fields.forEach((_, fieldId) => {
-  //       FormFieldFactory.destroyField(fieldId);
-  //     });
-  //     this.fields.clear();
-  //   }
 }
