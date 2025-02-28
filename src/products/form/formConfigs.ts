@@ -209,7 +209,7 @@ export const applicationConfig: FormConfig = {
       type: 'dropdown',
       options: getAllCountries(),
       searchable: true,
-      //   placeholder: 'Select a country...',
+      placeholder: 'Select a country...',
     },
     'residency-field': {
       type: 'dropdown',

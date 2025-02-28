@@ -133,6 +133,14 @@ export class SelectTabs {
     // Dispatch change event
     const event = new Event('change', { bubbles: true });
     this.hiddenInput.dispatchEvent(event);
+
+    // Also dispatch an input event to trigger immediate validation
+    const inputEvent = new Event('input', { bubbles: true });
+    this.hiddenInput.dispatchEvent(inputEvent);
+
+    // Dispatch a blur event to mark the field as touched
+    const blurEvent = new Event('blur', { bubbles: true });
+    this.hiddenInput.dispatchEvent(blurEvent);
   }
 
   // Public methods
