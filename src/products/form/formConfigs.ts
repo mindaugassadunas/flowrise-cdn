@@ -217,6 +217,28 @@ export const applicationConfig: FormConfig = {
       searchable: true,
       //   placeholder: 'Select a country...',
     },
+    'state-field': {
+      type: 'dropdown',
+      options: [
+        { value: 'Baden-Württemberg', label: 'Baden-Württemberg' },
+        { value: 'Bayern', label: 'Bayern' },
+        { value: 'Berlin', label: 'Berlin' },
+        { value: 'Brandenburg', label: 'Brandenburg' },
+        { value: 'Bremen', label: 'Bremen' },
+        { value: 'Hamburg', label: 'Hamburg' },
+        { value: 'Hessen', label: 'Hessen' },
+        { value: 'Niedersachsen', label: 'Niedersachsen' },
+        { value: 'Mecklenburg-Vorpommern', label: 'Mecklenburg-Vorpommern' },
+        { value: 'Nordrhein-Westfalen', label: 'Nordrhein-Westfalen' },
+        { value: 'Rheinland-Pfalz', label: 'Rheinland-Pfalz' },
+        { value: 'Saarland', label: 'Saarland' },
+        { value: 'Sachsen', label: 'Sachsen' },
+        { value: 'Sachsen-Anhalt', label: 'Sachsen-Anhalt' },
+        { value: 'Schleswig-Holstein', label: 'Schleswig-Holstein' },
+        { value: 'Thüringen', label: 'Thüringen' },
+      ],
+      searchable: false,
+    },
     'academic-experience-field': {
       type: 'dropdown',
       options: [
@@ -299,4 +321,127 @@ export const applicationConfig: FormConfig = {
       type: 'select',
     },
   },
+
+  conditionalFields: [
+    {
+      targetFieldId: 'de-institution-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'state-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'linkedin-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'linkedin-boolean',
+          operator: 'equals',
+          value: 'Yes',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'cv-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'linkedin-boolean',
+          operator: 'equals',
+          value: 'No',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'programming-experience-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'tools',
+          operator: 'contains',
+          value: 'Programming languages',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'courses-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'it-boolean',
+          operator: 'equals',
+          value: 'Yes',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'tc-connection-explained-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'tc-connection',
+          operator: 'equals',
+          value: 'Yes',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+  ],
+  // conditionalSteps: [
+  //   {
+  //     stepId: 'step11',
+  //     action: 'show',
+  //     operator: 'AND',
+  //     conditions: [
+  //       {
+  //         fieldId: 'residency',
+  //         operator: 'equals',
+  //         value: 'Germany',
+  //       },
+  //     ],
+  //     clearOnHide: true,
+  //     validateOnShow: true,
+  //   },
+  // ],
 };
+
+// German language skills - if Germany
+
+// Learning hours
+
+// Banner - IF work-status = not working - for AI

@@ -39,28 +39,6 @@ export class ConditionalFieldManager {
   public addRule(rule: ConditionalRule): void {
     this.rules.push(rule);
 
-    // Add initial state to state manager
-    const targetField = document.getElementById(
-      rule.targetFieldId,
-    ) as HTMLElement;
-    if (targetField) {
-      this.stateManager.updateState({
-        fields: {
-          [rule.targetFieldId]: {
-            ...this.stateManager.getFieldState(rule.targetFieldId),
-            value:
-              this.stateManager.getFieldState(rule.targetFieldId)?.value ?? '',
-            isVisible: this.evaluateRule(rule),
-            isDirty: false,
-            isTouched: false,
-            isValid: true,
-            isDisabled: false,
-            errors: [],
-          },
-        },
-      });
-    }
-
     // Set up listeners for condition fields
     rule.conditions.forEach(condition => {
       const field = document.getElementById(condition.fieldId);
@@ -68,6 +46,38 @@ export class ConditionalFieldManager {
         field.addEventListener('change', () => this.evaluateRule(rule));
       }
     });
+
+    // Don't evaluate the rule immediately!
+  }
+
+  public initializeRules(): void {
+    // First ensure all fields have initial states
+    this.rules.forEach(rule => {
+      const targetField = document.getElementById(
+        rule.targetFieldId,
+      ) as HTMLElement;
+      if (targetField) {
+        this.stateManager.updateState({
+          fields: {
+            [rule.targetFieldId]: {
+              ...this.stateManager.getFieldState(rule.targetFieldId),
+              value:
+                this.stateManager.getFieldState(rule.targetFieldId)?.value ??
+                '',
+              isVisible: true, // Start as visible
+              isDirty: false,
+              isTouched: false,
+              isValid: true,
+              isDisabled: false,
+              errors: [],
+            },
+          },
+        });
+      }
+    });
+
+    // Then evaluate all rules after states are initialized
+    this.evaluateAllConditions();
   }
 
   private evaluateAllConditions(): void {
@@ -76,6 +86,7 @@ export class ConditionalFieldManager {
 
     try {
       this.isEvaluating = true;
+      console.log('IS EVALUATING TRUE');
       this.rules.forEach(rule => this.evaluateRule(rule));
     } finally {
       this.isEvaluating = false;
@@ -83,9 +94,11 @@ export class ConditionalFieldManager {
   }
 
   private evaluateRule(rule: ConditionalRule): boolean {
+    console.log('EVALUATE RULE', rule);
     const results = rule.conditions.map(condition =>
       this.evaluateCondition(condition),
     );
+    console.log('EVALUATE RULE RESULTS', results);
 
     const finalResult =
       rule.operator === 'OR'
@@ -99,7 +112,7 @@ export class ConditionalFieldManager {
       const shouldShow = rule.action === 'show' ? finalResult : !finalResult;
       this.updateFieldVisibility(targetField, shouldShow);
     }
-
+    console.log('FINAL RESULT', finalResult);
     return finalResult;
   }
 
@@ -110,6 +123,8 @@ export class ConditionalFieldManager {
     if (!field) return false;
 
     const fieldValue = field.value;
+    console.log('EVALUATE CONDITION', condition);
+    console.log('FIELD VALUE', field.value);
 
     switch (condition.operator) {
       case 'equals':
@@ -159,35 +174,49 @@ export class ConditionalFieldManager {
 
   private resetFieldValidation(fieldId: string) {
     // Mark the field as valid and remove it from `invalidFields`
+    console.log('RESET FIELD VALIDATION');
     this.validator['invalidFields'].delete(fieldId);
     this.stateManager.setFieldValidation(fieldId, true, []);
   }
 
   private updateFieldVisibility(field: HTMLElement, isVisible: boolean): void {
     const fieldId = field.id;
-    const currentState = this.stateManager.getFieldState(fieldId);
-    if (!currentState) return;
+    let currentState = this.stateManager.getFieldState(fieldId);
+    console.log('UPDATE FIELD VISIBILITY', fieldId, currentState);
+    // UPDATE FIELD VISIBILITY state-field undefined
+    if (!currentState) {
+      currentState = {
+        value: field instanceof HTMLInputElement ? field.value : '',
+        isDirty: false,
+        isTouched: false,
+        isValid: true,
+        errors: [],
+        isDisabled: false,
+        isVisible: true,
+        isFunctional: false,
+      };
+    }
 
-    const fieldContainer = (field.closest('.form-group') ||
+    const fieldContainer = (field.closest('.form_input-group') ||
       field) as HTMLElement;
     fieldContainer.style.display = isVisible ? '' : 'none';
 
     // Always update the state, regardless of isEvaluating
     this.stateManager.updateState({
-        fields: {
-            [fieldId]: {
-                ...currentState,
-                isVisible: isVisible,
-            },
+      fields: {
+        [fieldId]: {
+          ...currentState,
+          isVisible: isVisible,
         },
+      },
     });
 
     // Only handle event listeners and other side effects when not evaluating
     if (!this.isEvaluating) {
-        if (isVisible) {
-            field.addEventListener('input', e => this.handleFieldInput(e));
-            field.addEventListener('blur', e => this.handleFieldBlur(e));
-        }
+      if (isVisible) {
+        field.addEventListener('input', e => this.handleFieldInput(e));
+        field.addEventListener('blur', e => this.handleFieldBlur(e));
+      }
     }
 
     const rule = this.rules.find(r => r.targetFieldId === fieldId);

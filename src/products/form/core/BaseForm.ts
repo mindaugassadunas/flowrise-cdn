@@ -612,6 +612,9 @@ export abstract class BaseForm {
 
     // Process data-attribute based rules
     this.setupDataAttributeRules();
+
+    // Initialize all rules AFTER registration
+    this.conditionalManager.initializeRules();
   }
 
   private setupConditionalField(config: ConditionalFieldConfig): void {
