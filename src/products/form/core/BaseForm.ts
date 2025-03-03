@@ -289,6 +289,9 @@ export abstract class BaseForm {
         return;
       }
 
+      // Convert phone numbers to international format
+      this.convertPhoneNumbersToInternational();
+
       // Collect form data
       const submitData = this.collectFormData();
 
@@ -315,6 +318,24 @@ export abstract class BaseForm {
       this.stateManager.endSubmission();
       this.updateUIForSubmission(false);
     }
+  }
+
+  private convertPhoneNumbersToInternational(): void {
+    // Find all phone inputs that have intl-tel-input initialized
+    const phoneInputs = this.form.querySelectorAll('input[type="tel"]');
+
+    phoneInputs.forEach(input => {
+      const inputElement = input as HTMLInputElement;
+
+      // Check if this input has the intl-tel-input initialized
+      if ((input as any).iti) {
+        const iti = (input as any).iti;
+        // Only update if valid
+        if (iti.isValidNumber()) {
+          inputElement.value = iti.getNumber();
+        }
+      }
+    });
   }
 
   protected handleReset(e: Event): void {
@@ -382,7 +403,25 @@ export abstract class BaseForm {
 
   protected updateUIForSubmission(isSubmitting: boolean): void {
     if (this.submitButton) {
+      // Store original button text if needed
+      console.log('IS SUBMITTING', isSubmitting);
+      if (isSubmitting && !this.submitButton.dataset.originalText) {
+        this.submitButton.dataset.originalText =
+          this.submitButton.textContent || '';
+      }
+
+      // Update button text based on data-wait attribute
+      if (isSubmitting && this.submitButton.dataset.wait) {
+        console.log('SUBMIT TEXT', this.submitButton.dataset.wait);
+        this.submitButton.textContent = this.submitButton.dataset.wait;
+      } else if (!isSubmitting && this.submitButton.dataset.originalText) {
+        this.submitButton.textContent = this.submitButton.dataset.originalText;
+        delete this.submitButton.dataset.originalText;
+      }
+
+      console.log('BUTTON STATUS');
       this.submitButton.disabled = isSubmitting;
+      console.log(this.submitButton.disabled);
     }
 
     if (this.loadingIndicator) {
