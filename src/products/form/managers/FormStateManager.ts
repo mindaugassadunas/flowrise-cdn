@@ -39,23 +39,30 @@ export class FormStateManager {
   }
 
   public shouldValidateField(fieldId: string): boolean {
-    const field = this.state.fields[fieldId];
-    if (!field) return true;
-
     // Get the DOM element
     const element = document.getElementById(fieldId);
-    if (!element) return true;
+    if (!element) return true; // Default behavior if element not found
 
-    // Use offsetParent to check if element is in a hidden container
-    const isElementOrParentHidden = element.offsetParent === null;
+    // Special case for functional hidden inputs (dropdown inputs)
+    if (
+      element.getAttribute('type') === 'hidden' &&
+      element.hasAttribute('fl-functional-input')
+    ) {
+      // For dropdown inputs, check if the container is visible
+      const container =
+        element.closest('.form_input-group') ||
+        element.closest('.form_dropdown-wrapper') ||
+        element.parentElement;
 
-    // Don't validate if inside a conditionally hidden container
-    if (isElementOrParentHidden) {
-      return false;
+      // Only validate if the container is visible
+      if (container) {
+        return window.getComputedStyle(container).display !== 'none';
+      }
     }
 
-    // Otherwise, use the original logic
-    return field.isVisible !== false || field.isFunctional === true;
+    // For all other elements, use offsetParent check
+    const isHiddenInDOM = element.offsetParent === null;
+    return !isHiddenInDOM;
   }
 
   // Subscribe to state changes
