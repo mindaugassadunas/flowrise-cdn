@@ -40,6 +40,20 @@ export const localConfig: FormConfig = {
       clearOnHide: true,
       validateOnShow: false,
     },
+    {
+      targetFieldId: 'phoneInput',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'skills_dropdown',
+          operator: 'equals',
+          value: 'Part-time',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
   ],
   conditionalSteps: [
     {
@@ -324,7 +338,7 @@ export const applicationConfig: FormConfig = {
 
   conditionalFields: [
     {
-      targetFieldId: 'de-institution-field',
+      targetFieldId: 'de-institution',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -338,7 +352,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'state-field',
+      targetFieldId: 'state',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -352,7 +366,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'linkedin-field',
+      targetFieldId: 'linkedin',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -366,7 +380,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'cv-field',
+      targetFieldId: 'cv',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -380,7 +394,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'programming-experience-field',
+      targetFieldId: 'programming-experience',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -394,7 +408,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'courses-field',
+      targetFieldId: 'courses',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -408,7 +422,7 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
-      targetFieldId: 'tc-connection-explained-field',
+      targetFieldId: 'tc-connection-explained',
       action: 'show',
       operator: 'AND',
       conditions: [
@@ -422,22 +436,22 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
   ],
-  // conditionalSteps: [
-  //   {
-  //     stepId: 'step11',
-  //     action: 'show',
-  //     operator: 'AND',
-  //     conditions: [
-  //       {
-  //         fieldId: 'residency',
-  //         operator: 'equals',
-  //         value: 'Germany',
-  //       },
-  //     ],
-  //     clearOnHide: true,
-  //     validateOnShow: true,
-  //   },
-  // ],
+  conditionalSteps: [
+    {
+      stepId: 'step11',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: true,
+    },
+  ],
 };
 
 // German language skills - if Germany

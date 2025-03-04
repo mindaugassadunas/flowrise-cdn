@@ -14,17 +14,17 @@
   margin-top: 20px;
 }
 
-.form-group {
+.form_input-group {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.form_input-group label {
   display: block;
   margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group select {
+.form_input-group input,
+.form_input-group select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
@@ -54,8 +54,8 @@
   display: block;
 }
 
-.form-group input.is-error,
-.form-group select.is-error {
+.form_input-group input.is-error,
+.form_input-group select.is-error {
   border-color: red;
 }
 

@@ -41,6 +41,20 @@ export class FormStateManager {
   public shouldValidateField(fieldId: string): boolean {
     const field = this.state.fields[fieldId];
     if (!field) return true;
+
+    // Get the DOM element
+    const element = document.getElementById(fieldId);
+    if (!element) return true;
+
+    // Use offsetParent to check if element is in a hidden container
+    const isElementOrParentHidden = element.offsetParent === null;
+
+    // Don't validate if inside a conditionally hidden container
+    if (isElementOrParentHidden) {
+      return false;
+    }
+
+    // Otherwise, use the original logic
     return field.isVisible !== false || field.isFunctional === true;
   }
 
@@ -181,11 +195,18 @@ export class FormStateManager {
     });
   }
 
-  // Private helper to update state and notify subscribers
+  // Replace the existing updateState method with this fixed version
   public updateState(partial: Partial<FormState>): void {
     this.state = {
       ...this.state,
       ...partial,
+      // Special handling for fields to merge properly
+      fields: partial.fields
+        ? {
+            ...this.state.fields, // Preserve existing fields
+            ...partial.fields, // Add/update the specified fields
+          }
+        : this.state.fields,
     };
     this.notifySubscribers();
   }

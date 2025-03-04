@@ -38,21 +38,21 @@
                 <!-- Step 1: Personal Information -->
                 <div class="swiper-slide form-step" id="step1">
                   <h2>Personal Information</h2>
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="firstName">First Name *</label>
                     <input type="text" id="firstName" name="firstName" />
                     <div class="error-message" data-error="firstName">
                       Please enter your first name
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="lastName">Last Name *</label>
                     <input type="text" id="lastName" name="lastName" required />
                     <div class="error-message" data-error="lastName">
                       Please enter your last name
                     </div>
                   </div>
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="email">Email *</label>
                     <input
                       type="email"
@@ -70,7 +70,7 @@
                   </div>
 
                   <!-- URL field  -->
-                  <div class="form-group" id="websiteUrlField">
+                  <div class="form_input-group" id="websiteUrlField">
                     <label for="websiteUrl">Website URL *</label>
                     <input
                       type="url"
@@ -85,7 +85,7 @@
                   </div>
 
                   <!-- Textarea  -->
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="comments">Comments *</label>
                     <textarea
                       id="comments"
@@ -96,7 +96,7 @@
                     <div class="error-message" data-error="comments"></div>
                   </div>
 
-                  <div class="form-group checkbox-group">
+                  <div class="form_input-group checkbox-group">
                     <label class="checkbox-label">
                       <input
                         type="checkbox"
@@ -118,7 +118,7 @@
                   <!-- Searchable dropdown -->
                   <div
                     id="country"
-                    class="form-group dropdown-container"
+                    class="form_input-group dropdown-container"
                     fl="dropdown"
                     fl-type="searchable"
                   >
@@ -176,7 +176,7 @@
                   <!-- Regular dropdown -->
                   <div
                     id="skills"
-                    class="form-group dropdown-container"
+                    class="form_input-group dropdown-container"
                     fl="dropdown"
                     fl-type="custom"
                   >
@@ -241,14 +241,14 @@
                   </div>
 
                   <!-- Phone  -->
-                  <div class="form-group">
+                  <div class="form_input-group" id="phone-field">
                     <label for="phoneInput">Phone</label>
                     <input type="tel" id="phoneInput" name="phone" required />
                     <div class="error-message" data-error="phoneInput"></div>
                   </div>
 
                   <!-- Datepicker -->
-                  <div class="form-group" id="datepicker" fl="datepicker">
+                  <div class="form_input-group" id="datepicker" fl="datepicker">
                     <input
                       id="datepicker1"
                       type="text"
@@ -260,13 +260,13 @@
                   </div>
 
                   <!-- File upload  -->
-                  <div id="fileUpload" class="form-group"></div>
+                  <div id="fileUpload" class="form_input-group"></div>
                 </div>
 
                 <!-- Step 2: Confirmation -->
                 <div class="swiper-slide form-step" id="step2">
                   <h2>Last step</h2>
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="username">First Name *</label>
                     <input type="text" id="username" name="username" required />
                     <div class="error-message" data-error="username">
@@ -275,7 +275,7 @@
                   </div>
                   <!-- Example 1: Radio Selection (Single Select) -->
                   <h2 class="demo-title">Select - radio</h2>
-                  <div class="form-group" id="select1">
+                  <div class="form_input-group" id="select1">
                     <div class="select-tabs" data-select-type="radio">
                       <input
                         type="hidden"
@@ -427,7 +427,7 @@
                 <!-- Step 3: Confirmation -->
                 <div class="swiper-slide form-step" id="step3">
                   <h2>Last step</h2>
-                  <div class="form-group">
+                  <div class="form_input-group">
                     <label for="username2">First Name *</label>
                     <input
                       type="text"
