@@ -37,7 +37,7 @@ export class MultiStepForm extends BaseForm {
       },
       on: {
         slideChange: () => {
-          this.updateUI();
+          this.updateNavigationUI();
           if (this.config.scrollToTop === true) {
             this.scrollToFormTop(this.config.smoothScroll || false);
           }
@@ -203,31 +203,46 @@ export class MultiStepForm extends BaseForm {
   }
 
   protected updateUI(): void {
-    // Skip Swiper-specific updates if Swiper isn't properly initialized
-    if (this.swiper?.slides) {
-      const currentIndex = this.swiper.activeIndex;
-      let visibleIndex = this.visibleSteps.indexOf(currentIndex);
+    // // Skip Swiper-specific updates if Swiper isn't properly initialized
+    // if (this.swiper?.slides) {
+    //   const currentIndex = this.swiper.activeIndex;
+    //   let visibleIndex = this.visibleSteps.indexOf(currentIndex);
 
-      // If the current slide is not visible, adjust to the nearest visible slide.
-      if (visibleIndex === -1 && this.visibleSteps.length > 0) {
-        const nextVisible =
-          this.visibleSteps.find(index => index > currentIndex) ||
-          this.visibleSteps[this.visibleSteps.length - 1];
-        this.swiper.slideTo(nextVisible);
-        visibleIndex = this.visibleSteps.indexOf(nextVisible);
-      }
+    //   // If the current slide is not visible, adjust to the nearest visible slide.
+    //   if (visibleIndex === -1 && this.visibleSteps.length > 0) {
+    //     const nextVisible =
+    //       this.visibleSteps.find(index => index > currentIndex) ||
+    //       this.visibleSteps[this.visibleSteps.length - 1];
+    //     this.swiper.slideTo(nextVisible);
+    //     visibleIndex = this.visibleSteps.indexOf(nextVisible);
+    //   }
 
-      if (this.currentStepElement) {
-        this.currentStepElement.textContent = (visibleIndex + 1).toString();
-      }
+    //   if (this.currentStepElement) {
+    //     this.currentStepElement.textContent = (visibleIndex + 1).toString();
+    //   }
 
-      this.updateNavigationButtons(visibleIndex);
-      this.updateProgressBar(visibleIndex);
-      super.updateUI(this.stateManager.getState());
-    }
+    //   this.updateNavigationButtons(visibleIndex);
+    //   this.updateProgressBar(visibleIndex);
+    //   super.updateUI(this.stateManager.getState());
+    // }
 
     // Call parent's updateUI for general form updates
     super.updateUI(this.stateManager.getState());
+  }
+
+  protected updateNavigationUI(): void {
+    if (!this.swiper?.slides) return;
+
+    const currentIndex = this.swiper.activeIndex;
+    let visibleIndex = this.visibleSteps.indexOf(currentIndex);
+
+    // Navigation-specific updates only
+    if (this.currentStepElement) {
+      this.currentStepElement.textContent = (visibleIndex + 1).toString();
+    }
+
+    this.updateNavigationButtons(visibleIndex);
+    this.updateProgressBar(visibleIndex);
   }
 
   private updateNavigationButtons(currentPosition: number): void {
