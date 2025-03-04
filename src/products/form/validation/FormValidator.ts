@@ -51,7 +51,31 @@ export class FormValidator {
   }
 
   public init(form: HTMLFormElement): void {
-    const allFields = form.querySelectorAll('input, select, textarea');
+    // In FormValidator.ts
+    const allFields = Array.from(
+      form.querySelectorAll('input, select, textarea'),
+    ).filter(field => {
+      // 1. First check for your custom attribute (for your own fields)
+      if (field.hasAttribute('fl-no-validate')) {
+        return false;
+      }
+
+      // 2. Then check for third-party classes (for library components)
+      const thirdPartyExcludedClasses = [
+        'iti__search-input',
+        // Any other third-party classes to exclude
+      ];
+
+      if (
+        thirdPartyExcludedClasses.some(className =>
+          field.classList.contains(className),
+        )
+      ) {
+        return false;
+      }
+
+      return true;
+    });
     console.log('validator init', allFields);
 
     allFields.forEach(field => {
