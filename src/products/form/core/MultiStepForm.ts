@@ -22,7 +22,8 @@ export class MultiStepForm extends BaseForm {
     );
     this.initializeVisibleSteps();
     this.currentStepElement = document.getElementById('currentStep');
-    this.progressBar = document.getElementById('progressBar');
+    this.progressBar = document.querySelector('[fl-part="progress-bar"]');
+    // this.updateNavigationUI();
   }
 
   private initializeSwiper(): void {

@@ -55,6 +55,11 @@ export class FormValidator {
     const allFields = Array.from(
       form.querySelectorAll('input, select, textarea'),
     ).filter(field => {
+      // Skip submit buttons
+      if (field instanceof HTMLInputElement && field.type === 'submit') {
+        return false;
+      }
+
       // 1. First check for your custom attribute (for your own fields)
       if (field.hasAttribute('fl-no-validate')) {
         return false;
