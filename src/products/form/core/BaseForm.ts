@@ -354,8 +354,18 @@ export abstract class BaseForm {
     this.updateUI(this.stateManager.getState());
   }
 
+  // protected handleStateChange(state: FormState): void {
+  //   this.updateUI(state);
+  // }
+
   protected handleStateChange(state: FormState): void {
-    this.updateUI(state);
+    // First, update standard UI elements (fields, validation messages)
+    this.updateFieldsUI(state);
+    this.updateSubmitButton(state);
+    this.updateErrorContainer(state);
+
+    // Only update navigation when slides change, not for every field change
+    // (The Swiper already handles this in its slideChange event)
   }
 
   protected updateUI(state: FormState): void {

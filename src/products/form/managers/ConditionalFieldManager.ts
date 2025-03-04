@@ -80,11 +80,23 @@ export class ConditionalFieldManager {
     this.evaluateAllConditions();
   }
 
+  private _debounceTimer: any = null;
+  private _lastEvaluationTime = 0;
+
   private evaluateAllConditions(): void {
     // Prevent recursive evaluation
     if (this.isEvaluating) return;
 
+    // Add a minimum time between evaluations (e.g., 200ms)
+    const now = Date.now();
+    if (now - this._lastEvaluationTime < 200) {
+      if (this._debounceTimer) clearTimeout(this._debounceTimer);
+      this._debounceTimer = setTimeout(() => this.evaluateAllConditions(), 200);
+      return;
+    }
+
     try {
+      this._lastEvaluationTime = now;
       this.isEvaluating = true;
       console.log('IS EVALUATING TRUE');
       this.rules.forEach(rule => this.evaluateRule(rule));

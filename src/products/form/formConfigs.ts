@@ -436,22 +436,22 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
   ],
-  conditionalSteps: [
-    {
-      stepId: 'step11',
-      action: 'show',
-      operator: 'AND',
-      conditions: [
-        {
-          fieldId: 'residency',
-          operator: 'equals',
-          value: 'Germany',
-        },
-      ],
-      clearOnHide: true,
-      validateOnShow: true,
-    },
-  ],
+  // conditionalSteps: [
+  //   {
+  //     stepId: 'step11',
+  //     action: 'show',
+  //     operator: 'AND',
+  //     conditions: [
+  //       {
+  //         fieldId: 'residency',
+  //         operator: 'equals',
+  //         value: 'Germany',
+  //       },
+  //     ],
+  //     clearOnHide: true,
+  //     validateOnShow: true,
+  //   },
+  // ],
 };
 
 // German language skills - if Germany
