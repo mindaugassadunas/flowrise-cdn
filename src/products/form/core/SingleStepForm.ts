@@ -117,13 +117,14 @@ export class SingleStepForm extends BaseForm {
     }
   }
 
-  protected onSuccessfulSubmit(): void {
+  protected async onSuccessfulSubmit(): Promise<void> {
+    const submitData = await this.collectFormData();
     // Dispatch custom event for external integrations
     const event = new CustomEvent('formSubmitSuccess', {
       detail: {
         formId: this.form?.id,
         timestamp: new Date().toISOString(),
-        data: this.collectFormData().formData,
+        data: submitData,
       },
       bubbles: true,
     });
@@ -149,8 +150,8 @@ export class SingleStepForm extends BaseForm {
   // Public methods
 
   // This is a convenience method to access form data directly
-  public getFormData(): FormSubmitData {
-    return this.collectFormData();
+  public async getFormData(): Promise<FormSubmitData> {
+    return await this.collectFormData();
   }
 }
 

@@ -293,7 +293,7 @@ export abstract class BaseForm {
       this.convertPhoneNumbersToInternational();
 
       // Collect form data
-      const submitData = this.collectFormData();
+      const submitData = await this.collectFormData();
 
       // Store to localstorage
       if (this.config.storage?.storeMode === 'submit') {
@@ -467,12 +467,59 @@ export abstract class BaseForm {
     }
   }
 
-  protected collectFormData(): FormSubmitData {
+  // Handle files if needed
+  // Convert file to Base64
+  private getBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  protected async collectFormData(): Promise<FormSubmitData> {
     const formData = new FormData(this.form);
     const data: Record<string, any> = {};
 
+    // First, process file inputs
+    const fileInputs = this.form.querySelectorAll(
+      'input[type="file"]',
+    ) as NodeListOf<HTMLInputElement>;
+
+    // Array to store file processing promises
+    const fileProcessPromises: Promise<void>[] = [];
+
+    // Process each file input
+    fileInputs.forEach(fileInput => {
+      const inputName = fileInput.name;
+      const file = fileInput.files?.[0];
+
+      if (file) {
+        const filePromise = this.getBase64(file)
+          .then(base64Data => {
+            // Add base64 encoded file and filename to form data
+            data[`${inputName}-base64`] = base64Data;
+            data[`${inputName}-filename`] = file.name;
+          })
+          .catch(error => {
+            console.error(
+              `Error processing file for input ${inputName}:`,
+              error,
+            );
+          });
+
+        fileProcessPromises.push(filePromise);
+      }
+    });
+
+    // Wait for all file processing to complete
+    await Promise.all(fileProcessPromises);
+
     formData.forEach((value, key) => {
-      data[key] = value;
+      if (!key.endsWith('-base64') && !key.endsWith('-filename')) {
+        data[key] = value;
+      }
     });
 
     return {
