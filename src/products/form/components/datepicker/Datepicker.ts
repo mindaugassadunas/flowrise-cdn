@@ -178,7 +178,7 @@ export class Datepicker {
       this.portal.updatePosition(this.input, {
         placement: 'bottom',
         offset: 4,
-        maxHeight: 300, // Adjust this value as needed
+        maxHeight: 400, // Adjust this value as needed
       });
     }
   }
@@ -210,7 +210,7 @@ export class Datepicker {
       this.portal.updatePosition(this.input, {
         placement: 'bottom',
         offset: 4,
-        maxHeight: 300,
+        maxHeight: 400,
       });
     }
   };
@@ -219,9 +219,24 @@ export class Datepicker {
     const header = document.createElement('div');
     header.className = 'fl-datepicker-header';
 
+    const iconLeft = `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.125 11.668H7.875" stroke="currentColor" stroke-width="1.04271" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M11.542 15.334L7.87533 11.6673L11.542 8.00065" stroke="currentColor" stroke-width="1.04271" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    const iconRight = `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.875 12.332L16.125 12.332" stroke="currentColor" stroke-width="1.04271" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.458 8.66602L16.1247 12.3327L12.458 15.9993" stroke="currentColor" stroke-width="1.04271" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    `;
+
     const prevButton = document.createElement('button');
     prevButton.type = 'button';
-    prevButton.innerHTML = '←';
+    prevButton.classList.add('form_datepicker_arrow');
+    prevButton.innerHTML = iconLeft;
     prevButton.addEventListener('click', (e: Event) => {
       e.stopPropagation();
       e.preventDefault();
@@ -231,7 +246,8 @@ export class Datepicker {
 
     const nextButton = document.createElement('button');
     nextButton.type = 'button';
-    nextButton.innerHTML = '→';
+    nextButton.classList.add('form_datepicker_arrow');
+    nextButton.innerHTML = iconRight;
     nextButton.addEventListener('click', (e: Event) => {
       e.stopPropagation();
       e.preventDefault();

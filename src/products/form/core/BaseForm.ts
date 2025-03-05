@@ -353,14 +353,25 @@ export abstract class BaseForm {
   //   this.updateUI(state);
   // }
 
+  private _lastStateHash: string = '';
   protected handleStateChange(state: FormState): void {
-    // First, update standard UI elements (fields, validation messages)
-    this.updateFieldsUI(state);
-    this.updateSubmitButton(state);
-    this.updateErrorContainer(state);
+    // Generate a simple hash of the validation state
+    const newStateHash = JSON.stringify(
+      Object.entries(state.fields).map(
+        ([id, field]) =>
+          `${id}:${field.isValid}:${field.isTouched}:${field.isDirty}`,
+      ),
+    );
 
-    // Only update navigation when slides change, not for every field change
-    // (The Swiper already handles this in its slideChange event)
+    // Only update UI if validation state has actually changed
+    if (this._lastStateHash !== newStateHash) {
+      this._lastStateHash = newStateHash;
+
+      // First, update standard UI elements
+      this.updateFieldsUI(state);
+      this.updateSubmitButton(state);
+      this.updateErrorContainer(state);
+    }
   }
 
   protected updateUI(state: FormState): void {
@@ -369,25 +380,36 @@ export abstract class BaseForm {
     this.updateErrorContainer(state);
   }
 
+  private _uiUpdateDebounceTimer: any = null;
   protected updateFieldsUI(state: FormState): void {
-    Object.entries(state.fields).forEach(([fieldId, fieldState]) => {
-      const field = document.getElementById(fieldId);
-      if (!field) return;
+    // Debounce the UI updates
+    if (this._uiUpdateDebounceTimer) {
+      clearTimeout(this._uiUpdateDebounceTimer);
+    }
 
-      // Update classes
-      field.classList.toggle(
-        'is-invalid',
-        !fieldState.isValid && fieldState.isTouched,
-      );
-      field.classList.toggle(
-        'is-valid',
-        fieldState.isValid && fieldState.isTouched,
-      );
-      field.classList.toggle('is-dirty', fieldState.isDirty);
+    this._uiUpdateDebounceTimer = setTimeout(() => {
+      // Existing updateFieldsUI code
+      Object.entries(state.fields).forEach(([fieldId, fieldState]) => {
+        const field = document.getElementById(fieldId);
+        if (!field) return;
 
-      // Update error messages
-      this.updateFieldErrors(fieldId, fieldState.errors);
-    });
+        // Update classes
+        field.classList.toggle(
+          'is-invalid',
+          !fieldState.isValid && fieldState.isTouched,
+        );
+        field.classList.toggle(
+          'is-valid',
+          fieldState.isValid && fieldState.isTouched,
+        );
+        field.classList.toggle('is-dirty', fieldState.isDirty);
+
+        // Update error messages
+        this.updateFieldErrors(fieldId, fieldState.errors);
+      });
+
+      this._uiUpdateDebounceTimer = null;
+    }, 50); // 50ms debounce should be enough
   }
 
   protected updateSubmitButton(state: FormState): void {

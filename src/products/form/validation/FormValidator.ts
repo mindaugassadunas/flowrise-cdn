@@ -222,6 +222,12 @@ export class FormValidator {
       return isValid;
     }
 
+    // Check if it's a dropdown (hidden input with fl-functional-input attribute)
+    const isDropdown =
+      element instanceof HTMLInputElement &&
+      element.type === 'hidden' &&
+      element.hasAttribute('fl-functional-input');
+
     console.log('VALIDATING', field, selector);
     const isValid = await this.validator.revalidateField(selector);
 
@@ -229,6 +235,41 @@ export class FormValidator {
       this.invalidFields.delete(fieldId);
     } else {
       this.invalidFields.add(fieldId);
+    }
+
+    // Special handling for dropdowns - update the visible component
+    if (isDropdown) {
+      // Find the parent dropdown container
+      const dropdownContainer = element.closest('[fl="dropdown"]');
+
+      if (dropdownContainer) {
+        // Find the visible dropdown input element
+        const visibleInput = dropdownContainer.querySelector(
+          '[fl-part="dropdown-input"]',
+        );
+
+        if (visibleInput instanceof HTMLElement) {
+          // Update classes on the visible input based on validation result
+          if (isValid) {
+            visibleInput.classList.remove('is-error');
+            visibleInput.classList.add('is-valid');
+          } else {
+            visibleInput.classList.add('is-error');
+            visibleInput.classList.remove('is-valid');
+          }
+
+          // Update accessibility attributes
+          visibleInput.setAttribute('aria-invalid', isValid ? 'false' : 'true');
+
+          // Handle error message visibility
+          const errorMessage = dropdownContainer.querySelector(
+            '.form_error-message',
+          );
+          if (errorMessage instanceof HTMLElement) {
+            errorMessage.style.display = isValid ? 'none' : 'block';
+          }
+        }
+      }
     }
 
     return isValid;
