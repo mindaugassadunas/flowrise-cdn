@@ -303,11 +303,6 @@ export abstract class BaseForm {
       // Submit the form
       await this.submitForm(submitData);
 
-      // Clear stored data after successful submission
-      if (this.config.storage) {
-        StorageManager.clearStoredFormData(this.config.storage.key);
-      }
-
       // Handle success
       this.handleSubmitSuccess();
     } catch (error) {
@@ -499,6 +494,11 @@ export abstract class BaseForm {
     this.stateManager.resetForm();
     this.form.reset();
     this.validator.clearValidationState();
+
+    // Clear stored data after successful submission if clearOnSubmit is not explicitly false
+    if (this.config.storage && this.config.storage.clearOnSubmit !== false) {
+      StorageManager.clearStoredFormData(this.config.storage.key);
+    }
 
     if (this.config.successRedirect) {
       const redirectUrl = this.buildRedirectUrl();

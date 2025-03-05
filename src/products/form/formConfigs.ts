@@ -206,7 +206,68 @@ export const applicationConfig: FormConfig = {
       storageKey: 'utm_source',
       defaultValue: '',
     },
+    {
+      name: 'utm_medium',
+      cookieKey: 'utm_medium',
+      storageKey: 'utm_medium',
+      defaultValue: '',
+    },
+    {
+      name: 'utm_campaign',
+      cookieKey: 'utm_campaign',
+      storageKey: 'utm_campaign',
+      defaultValue: '',
+    },
+    {
+      name: 'utm_content',
+      cookieKey: 'utm_content',
+      storageKey: 'utm_content',
+      defaultValue: '',
+    },
+    {
+      name: 'utm_term',
+      cookieKey: 'utm_term',
+      storageKey: 'utm_term',
+      defaultValue: '',
+    },
+    {
+      name: 'irclickid',
+      cookieKey: 'irclickid',
+      storageKey: 'irclickid',
+      defaultValue: '',
+    },
+    {
+      name: 'ref',
+      cookieKey: 'ref',
+      storageKey: 'ref',
+      defaultValue: '',
+    },
+    {
+      name: 'refid',
+      cookieKey: 'refid',
+      storageKey: 'refid',
+      defaultValue: '',
+    },
+    {
+      name: 'ref_code',
+      cookieKey: 'ref_code',
+      storageKey: 'ref_code',
+      defaultValue: '',
+    },
+    {
+      name: 'user_uuid',
+      cookieKey: 'user_uuid',
+      storageKey: 'user_uuid',
+      defaultValue: '',
+    },
   ],
+  storage: {
+    key: 'application_form_data', // localStorage key to use
+    prefill: true, // Enable prefilling
+    storeMode: 'submit', // Can be 'submit' or 'live'
+    fields: ['first-name', 'last-name', 'email'], // Fields to store/prefill
+    clearOnSubmit: true,
+  },
   fields: {
     phone: {
       type: 'phone',

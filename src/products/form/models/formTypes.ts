@@ -92,8 +92,9 @@ export interface RedirectParam {
 export interface StorageConfig {
   key: string; // localStorage key for this form
   storeMode?: 'live' | 'submit'; // When to store data (default: 'submit')
-  fields?: string[]; // Specific fields to store (if empty, store all)
   prefill?: boolean; // Whether to prefill form with stored data
+  fields?: string[]; // Specific fields to store (if empty, store all)
+  clearOnSubmit?: boolean; // Add this property
 }
 
 export interface FormState {
