@@ -102,22 +102,38 @@ export class FormValidator {
         allRules = allRules.concat(customRules);
       }
 
+      // Check for custom error container
+      const fieldOptions: any = {};
+
+      // Look for an element with data-error-for="[field.id]"
+      const customErrorContainer = document.querySelector(
+        `[data-error="${field.id}"]`,
+      );
+      console.log('HERE IS ERROR CONTAINER', customErrorContainer);
+      if (customErrorContainer) {
+        fieldOptions.errorsContainer = `[data-error="${field.id}"]`;
+      }
+
       // Add field to validator EVEN IF it has no rules
       // This ensures all fields are registered with JustValidate
       if (allRules.length > 0) {
         console.log(`Adding field ${field.id} with rules:`, allRules);
-        this.validator.addField(`#${field.id}`, allRules);
+        this.validator.addField(`#${field.id}`, allRules, fieldOptions);
       } else {
         // Add field with a dummy rule that always passes
         // This ensures the field exists in JustValidate's registry
         console.log(`Adding field ${field.id} with default pass rule`);
-        this.validator.addField(`#${field.id}`, [
-          {
-            rule: 'function' as Rules,
-            validator: () => true, // Always passes validation
-            errorMessage: '', // No error message needed
-          },
-        ]);
+        this.validator.addField(
+          `#${field.id}`,
+          [
+            {
+              rule: 'function' as Rules,
+              validator: () => true, // Always passes validation
+              errorMessage: '', // No error message needed
+            },
+          ],
+          fieldOptions,
+        );
       }
     });
 
