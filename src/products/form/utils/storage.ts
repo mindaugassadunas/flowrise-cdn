@@ -1,6 +1,8 @@
 import { HiddenFieldConfig, StorageConfig } from '../models/formTypes';
 
 export class StorageManager {
+  private static EXPIRATION_DAYS = 60;
+
   static async waitForCookies(timeout: number = 2000): Promise<void> {
     return new Promise((resolve, reject) => {
       const startTime = Date.now();
@@ -59,21 +61,49 @@ export class StorageManager {
   static prefillForm(form: HTMLFormElement, config: StorageConfig): void {
     if (!config.prefill) return;
 
-    const storedData = localStorage.getItem(config.key);
-    if (!storedData) return;
+    const data = this.getStorageWithExpiry(config.key);
+    if (!data) return;
+
+    Object.entries(data).forEach(([fieldId, value]) => {
+      if (this.shouldStoreField(fieldId, config)) {
+        const field = form.querySelector(`#${fieldId}`) as HTMLInputElement;
+        if (field) {
+          field.value = value as string;
+        }
+      }
+    });
+  }
+
+  static getStorageWithExpiry(key: string): Record<string, any> | null {
+    const item = localStorage.getItem(key);
+    if (!item) return null;
 
     try {
-      const data = JSON.parse(storedData);
-      Object.entries(data).forEach(([fieldId, value]) => {
-        if (this.shouldStoreField(fieldId, config)) {
-          const field = form.querySelector(`#${fieldId}`) as HTMLInputElement;
-          if (field) {
-            field.value = value as string;
-          }
-        }
-      });
-    } catch {
-      // Silent catch for JSON parse errors
+      const parsedItem = JSON.parse(item);
+
+      // Check if item has the expected format
+      if (!parsedItem.storedAt) {
+        // Handle legacy data that might not have expiration
+        return typeof parsedItem.value === 'object'
+          ? parsedItem.value
+          : parsedItem;
+      }
+
+      // Calculate if expiration days have passed
+      const storedDate = new Date(parsedItem.storedAt).getTime();
+      const daysPassed =
+        (new Date().getTime() - storedDate) / (1000 * 60 * 60 * 24);
+
+      if (daysPassed > this.EXPIRATION_DAYS) {
+        localStorage.removeItem(key);
+        return null;
+      }
+
+      return parsedItem.value;
+    } catch (e) {
+      // If JSON parsing fails, return null
+      console.warn(`Error parsing stored form data: ${e}`);
+      return null;
     }
   }
 
@@ -86,6 +116,12 @@ export class StorageManager {
         data[key] = value;
       }
     });
+
+    // Store with expiration data
+    const storageItem = {
+      value: data,
+      storedAt: new Date().toISOString(),
+    };
 
     localStorage.setItem(config.key, JSON.stringify(data));
   }

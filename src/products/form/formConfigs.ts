@@ -195,8 +195,8 @@ export const applicationConfig: FormConfig = {
       value: 'DA',
     },
     {
-      key: 'utm',
-      fieldId: 'utm_source',
+      key: 'uid',
+      fieldId: 'uuid',
     },
   ],
   hiddenFields: [
