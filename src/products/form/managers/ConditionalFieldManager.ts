@@ -50,7 +50,10 @@ export class ConditionalFieldManager {
     // Don't evaluate the rule immediately!
   }
 
+  private isInitializing = true;
   public initializeRules(): void {
+    this.isInitializing = true;
+
     // First ensure all fields have initial states
     this.rules.forEach(rule => {
       const targetField = document.getElementById(
@@ -76,30 +79,35 @@ export class ConditionalFieldManager {
       }
     });
 
-    // Then evaluate all rules after states are initialized
-    this.evaluateAllConditions();
+    // Evaluate all rules during initialization
+    this.rules.forEach(rule => this.evaluateRule(rule));
+
+    // Mark initialization as complete
+    this.isInitializing = false;
   }
 
   private _debounceTimer: any = null;
   private _lastEvaluationTime = 0;
 
   private evaluateAllConditions(): void {
-    // Prevent recursive evaluation
-    if (this.isEvaluating) return;
-
-    // Add a minimum time between evaluations (e.g., 200ms)
-    const now = Date.now();
-    if (now - this._lastEvaluationTime < 200) {
-      if (this._debounceTimer) clearTimeout(this._debounceTimer);
-      this._debounceTimer = setTimeout(() => this.evaluateAllConditions(), 200);
-      return;
-    }
+    // Skip if no rules are defined
+    if (this.isEvaluating || this.rules.length === 0) return;
 
     try {
-      this._lastEvaluationTime = now;
       this.isEvaluating = true;
-      console.log('IS EVALUATING TRUE');
-      this.rules.forEach(rule => this.evaluateRule(rule));
+
+      // Only evaluate rules that are directly related to the changed field
+      this.rules.forEach(rule => {
+        // Check if any of the rule's conditions involve the recently changed field
+        const isRelevant = rule.conditions.some(
+          condition =>
+            this.stateManager.getFieldState(condition.fieldId)?.isDirty,
+        );
+
+        if (isRelevant) {
+          this.evaluateRule(rule);
+        }
+      });
     } finally {
       this.isEvaluating = false;
     }
