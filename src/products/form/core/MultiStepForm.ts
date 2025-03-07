@@ -32,6 +32,7 @@ export class MultiStepForm extends BaseForm {
       effect: 'fade',
       speed: 0,
       direction: 'horizontal',
+      autoHeight: true,
       slidesPerView: 1,
       fadeEffect: {
         crossFade: true,
@@ -54,7 +55,6 @@ export class MultiStepForm extends BaseForm {
         },
       },
     });
-    console.log('SWIPER INITIALIZED');
     console.log(this.swiper);
   }
 
@@ -66,10 +66,17 @@ export class MultiStepForm extends BaseForm {
 
   private initializeVisibleSteps(): void {
     // Initially, all steps are visible
-    this.visibleSteps = Array.from(
-      { length: this.swiper.slides.length },
-      (_, i) => i,
-    );
+    this.visibleSteps = Array.from(this.swiper.slides)
+      .map((slide, index) => ({ slide, index }))
+      .filter(item => item.slide.style.display !== 'none')
+      .map(item => {
+        // Log the ID if present
+        if (item.slide.id) {
+          console.log(`Visible slide ${item.index} has ID: ${item.slide.id}`);
+        }
+        return item.index;
+      });
+    console.log('INIT VISIBLE STEPS', this.visibleSteps);
 
     // Apply initial conditions
     if (this.config.conditionalSteps) {
@@ -109,6 +116,7 @@ export class MultiStepForm extends BaseForm {
       }
     }
 
+    console.log('UPDATED VISIBLE STEPS', this.visibleSteps);
     this.updateUI();
   }
 
@@ -137,6 +145,13 @@ export class MultiStepForm extends BaseForm {
           if (btn.classList.contains('submit-form')) this.handleSubmit(e);
         });
       });
+  }
+
+  // In MultiStepForm.ts
+  protected async validateForm(): Promise<boolean> {
+    // For final submission, we only want to validate the current step
+    // instead of all fields in the form
+    return await this.validateCurrentStep();
   }
 
   /**
@@ -204,29 +219,6 @@ export class MultiStepForm extends BaseForm {
   }
 
   protected updateUI(): void {
-    // // Skip Swiper-specific updates if Swiper isn't properly initialized
-    // if (this.swiper?.slides) {
-    //   const currentIndex = this.swiper.activeIndex;
-    //   let visibleIndex = this.visibleSteps.indexOf(currentIndex);
-
-    //   // If the current slide is not visible, adjust to the nearest visible slide.
-    //   if (visibleIndex === -1 && this.visibleSteps.length > 0) {
-    //     const nextVisible =
-    //       this.visibleSteps.find(index => index > currentIndex) ||
-    //       this.visibleSteps[this.visibleSteps.length - 1];
-    //     this.swiper.slideTo(nextVisible);
-    //     visibleIndex = this.visibleSteps.indexOf(nextVisible);
-    //   }
-
-    //   if (this.currentStepElement) {
-    //     this.currentStepElement.textContent = (visibleIndex + 1).toString();
-    //   }
-
-    //   this.updateNavigationButtons(visibleIndex);
-    //   this.updateProgressBar(visibleIndex);
-    //   super.updateUI(this.stateManager.getState());
-    // }
-
     // Call parent's updateUI for general form updates
     super.updateUI(this.stateManager.getState());
   }
@@ -264,6 +256,7 @@ export class MultiStepForm extends BaseForm {
     const isFirstVisible = currentPosition === 0;
     const isLastVisible = currentPosition === this.visibleSteps.length - 1;
 
+    console.log('VISIBLE SLIDES ARRAY', this.visibleSteps);
     console.log('First slide', isFirstVisible);
     console.log('Last slide', isLastVisible);
     console.log('currentPosition', currentPosition);
@@ -322,11 +315,16 @@ export class MultiStepForm extends BaseForm {
 
   private previousStep(): void {
     const currentIndex = this.swiper.activeIndex;
+    console.log('PREV SLIDE');
+    console.log('currentindex', currentIndex);
+    console.log('visible slides', this.visibleSteps);
     // Find the previous visible step
     const previousStep = this.visibleSteps
       .slice()
       .reverse()
       .find(index => index < currentIndex);
+
+    console.log('prev step found', previousStep);
 
     if (previousStep !== undefined) {
       this.swiper.slideTo(previousStep);
@@ -339,7 +337,11 @@ export class MultiStepForm extends BaseForm {
 
     const currentIndex = this.swiper.activeIndex;
     // Find the next visible step
+    console.log('NEXT SLIDE');
+    console.log('currentindex', currentIndex);
+    console.log('visible slides', this.visibleSteps);
     const nextStep = this.visibleSteps.find(index => index > currentIndex);
+    console.log('next step found', nextStep);
 
     if (nextStep !== undefined) {
       this.swiper.slideTo(nextStep);

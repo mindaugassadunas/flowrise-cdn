@@ -368,10 +368,13 @@ export const applicationConfig: FormConfig = {
     'hours-per-week-field': {
       type: 'select',
     },
-    'hours-per-week-short-program-field': {
+    'hours-per-week-short-field': {
       type: 'select',
     },
     'hours-per-week-de-field': {
+      type: 'select',
+    },
+    'hours-per-week-short-de-field': {
       type: 'select',
     },
     'heard-from-field': {
@@ -421,6 +424,30 @@ export const applicationConfig: FormConfig = {
           fieldId: 'residency',
           operator: 'equals',
           value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'explainer-not-working',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'work-status',
+          operator: 'equals',
+          value: 'Not working',
+        },
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Lithuania',
+        },
+        {
+          fieldId: 'program',
+          operator: 'equals',
+          value: 'AI',
         },
       ],
       clearOnHide: true,
@@ -483,6 +510,90 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
     {
+      targetFieldId: 'german-language',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'german-skills-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'hours-per-week-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'notEquals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'hours-per-week-short-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'notEquals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'hours-per-week-de-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
+      targetFieldId: 'hours-per-week-short-de-field',
+      action: 'show',
+      operator: 'AND',
+      conditions: [
+        {
+          fieldId: 'residency',
+          operator: 'equals',
+          value: 'Germany',
+        },
+      ],
+      clearOnHide: true,
+      validateOnShow: false,
+    },
+    {
       targetFieldId: 'tc-connection-explained',
       action: 'show',
       operator: 'AND',
@@ -497,26 +608,4 @@ export const applicationConfig: FormConfig = {
       validateOnShow: false,
     },
   ],
-  // conditionalSteps: [
-  //   {
-  //     stepId: 'step11',
-  //     action: 'show',
-  //     operator: 'AND',
-  //     conditions: [
-  //       {
-  //         fieldId: 'residency',
-  //         operator: 'equals',
-  //         value: 'Germany',
-  //       },
-  //     ],
-  //     clearOnHide: true,
-  //     validateOnShow: true,
-  //   },
-  // ],
 };
-
-// German language skills - if Germany
-
-// Learning hours
-
-// Banner - IF work-status = not working - for AI
