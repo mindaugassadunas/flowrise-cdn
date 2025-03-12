@@ -152,7 +152,10 @@ export class ValidationRulesBuilder {
 
     console.log('ready to validate');
     // Add datepicker-specific validation
-    if (field.getAttribute('data-fl-element') === 'datepicker') {
+    if (
+      field.getAttribute('data-fl-element') === 'datepicker' ||
+      field.closest('[fl="datepicker"]')
+    ) {
       // Add required validation if needed
       console.log('DATEPICKER DATEPICKER DATEPICKER');
       if (field.required || field.hasAttribute('required')) {
@@ -166,26 +169,27 @@ export class ValidationRulesBuilder {
       }
 
       // Add custom date validation
-      //   rules.push({
-      //     rule: 'function' as Rules,
-      //     validator: (value: string | boolean): boolean => {
-      //       if (!value && !field.required) return true;
+      rules.push({
+        rule: 'function' as Rules,
+        validator: (value: string | boolean): boolean => {
+          if (!value && !field.required) return true;
 
-      //       // Get datepicker instance
-      //       const datepickerElement = field.closest(
-      //         '[data-fl-element="datepicker"]',
-      //       );
-      //       if (!datepickerElement) return false;
+          // Get datepicker instance
+          const datepickerElement =
+            field.closest('[fl="datepicker"]') ||
+            field.closest('[data-fl-element="datepicker"]');
 
-      //       const datepicker = (datepickerElement as any)._datepicker;
-      //       if (!datepicker) return false;
+          if (!datepickerElement) return false;
 
-      //       return datepicker.validate();
-      //     },
-      //     errorMessage:
-      //       field.getAttribute('data-validate-message-date') ||
-      //       'Please enter a valid date',
-      //   });
+          const datepicker = (datepickerElement as any)._datepicker;
+          if (!datepicker) return false;
+
+          return datepicker.validate();
+        },
+        errorMessage:
+          field.getAttribute('data-validate-message-date') ||
+          'Please enter a valid date',
+      });
 
       // Add range validation if needed
       const rangeMode = field.getAttribute('data-date-range');

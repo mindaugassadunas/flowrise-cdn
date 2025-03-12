@@ -55,6 +55,9 @@ export class Portal {
     const element = this.portalContainer.firstElementChild as HTMLElement;
     if (!element || !this.originalParent) return null;
 
+    // Ensure the element is hidden before returning it
+    element.style.display = 'none';
+
     // Return to original position
     if (this.originalNextSibling) {
       this.originalParent.insertBefore(element, this.originalNextSibling);
