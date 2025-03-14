@@ -529,11 +529,17 @@ export abstract class BaseForm {
   }
 
   protected async submitForm(submitData: FormSubmitData): Promise<void> {
-    if (!this.config.action) {
+    let actionUrl = this.config.action;
+
+    if (!actionUrl && this.form.action) {
+      actionUrl = this.form.action;
+    }
+
+    if (!actionUrl) {
       throw new Error('No action URL provided in form configuration.');
     }
 
-    const response = await fetch(this.config.action, {
+    const response = await fetch(actionUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -569,7 +575,11 @@ export abstract class BaseForm {
       StorageManager.clearStoredFormData(this.config.storage.key);
     }
 
-    if (this.config.successRedirect) {
+    // Check for redirect (either in config or as form attribute)
+    const hasRedirect =
+      this.config.successRedirect || this.form.getAttribute('redirect');
+
+    if (hasRedirect) {
       const redirectUrl = this.buildRedirectUrl();
       window.location.href = redirectUrl;
       return;
@@ -599,7 +609,14 @@ export abstract class BaseForm {
   }
 
   private buildRedirectUrl(): string {
-    let baseUrl = this.config.successRedirect!;
+    let baseUrl: string | null | undefined = this.config.successRedirect;
+    if (!baseUrl) {
+      baseUrl = this.form.getAttribute('redirect');
+    }
+
+    if (!baseUrl) {
+      return window.location.href;
+    }
 
     // Handle relative paths
     if (!baseUrl.startsWith('http') && !baseUrl.startsWith('//')) {

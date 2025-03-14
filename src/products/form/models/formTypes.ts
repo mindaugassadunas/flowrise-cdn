@@ -7,7 +7,7 @@ import { URLFieldConfig } from '../components/url/types/urlTypes';
 
 export interface FormConfig {
   path: string;
-  action: string;
+  action?: string;
   method?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
   fields?: Record<
     string,
