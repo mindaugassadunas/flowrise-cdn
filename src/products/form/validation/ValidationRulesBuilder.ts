@@ -157,7 +157,6 @@ export class ValidationRulesBuilder {
       field.closest('[fl="datepicker"]')
     ) {
       // Add required validation if needed
-      console.log('DATEPICKER DATEPICKER DATEPICKER');
       if (field.required || field.hasAttribute('required')) {
         rules.push({
           rule: 'required' as Rules,
