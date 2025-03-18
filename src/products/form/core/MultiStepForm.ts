@@ -14,6 +14,10 @@ export class MultiStepForm extends BaseForm {
   constructor(wrapper: HTMLElement, form: HTMLFormElement, config: FormConfig) {
     super(wrapper, form, config);
     this.initializeSwiper();
+    if (this.conditionalManager) {
+      this.conditionalManager.setSwiper(this.swiper);
+    }
+
     this.stepConditionManager = new StepConditionManager(
       this.swiper,
       this.stateManager,
@@ -328,6 +332,12 @@ export class MultiStepForm extends BaseForm {
 
     if (previousStep !== undefined) {
       this.swiper.slideTo(previousStep);
+
+      // Update Swiper dimensions after navigation
+      setTimeout(() => {
+        this.swiper.updateAutoHeight();
+        this.swiper.update();
+      }, 50);
     }
   }
 
@@ -345,6 +355,11 @@ export class MultiStepForm extends BaseForm {
 
     if (nextStep !== undefined) {
       this.swiper.slideTo(nextStep);
+
+      setTimeout(() => {
+        this.swiper.updateAutoHeight();
+        this.swiper.update();
+      }, 50);
     }
   }
 

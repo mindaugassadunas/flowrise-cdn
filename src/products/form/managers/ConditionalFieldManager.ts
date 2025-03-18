@@ -22,15 +22,18 @@ export class ConditionalFieldManager {
   private validator: FormValidator;
   private form: HTMLFormElement;
   private isEvaluating: boolean = false;
+  private swiper: any = null;
 
   constructor(
     form: HTMLFormElement,
     stateManager: FormStateManager,
     validator: FormValidator,
+    swiperInstance?: any,
   ) {
     this.form = form;
     this.stateManager = stateManager;
     this.validator = validator;
+    this.swiper = swiperInstance;
 
     // Subscribe to state changes to evaluate conditions
     this.stateManager.subscribe(this.evaluateAllConditions.bind(this));
@@ -48,6 +51,11 @@ export class ConditionalFieldManager {
     });
 
     // Don't evaluate the rule immediately!
+  }
+
+  // Method to set Swiper instance after initialization if needed
+  public setSwiper(swiperInstance: any): void {
+    this.swiper = swiperInstance;
   }
 
   private isInitializing = true;
@@ -251,6 +259,13 @@ export class ConditionalFieldManager {
         field.value = '';
         this.stateManager.setFieldValue(fieldId, '');
       }
+    }
+
+    if (this.swiper) {
+      setTimeout(() => {
+        this.swiper.updateAutoHeight();
+        this.swiper.update(); // Full update of Swiper
+      }, 50);
     }
   }
 

@@ -45,6 +45,7 @@ export abstract class BaseForm {
       this.form,
       this.stateManager,
       this.validator,
+      null,
     );
 
     // Initialize form
