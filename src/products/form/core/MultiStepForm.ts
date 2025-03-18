@@ -373,6 +373,44 @@ export class MultiStepForm extends BaseForm {
     }
   }
 
+  protected setupKeyboardHandlers(): void {
+    // Listen for keydown events on all input fields
+    const inputFields = this.form.querySelectorAll('input, textarea');
+
+    inputFields.forEach(field => {
+      field.addEventListener('keydown', async (e: Event) => {
+        // Cast the event to KeyboardEvent
+        const keyEvent = e as KeyboardEvent;
+
+        // Check if the Enter key was pressed
+        if (keyEvent.key === 'Enter') {
+          // Prevent the default form submission
+          e.preventDefault();
+
+          // Get the current step index and determine if it's the last visible step
+          const currentIndex = this.swiper.activeIndex;
+          const currentVisibleIndex = this.visibleSteps.indexOf(currentIndex);
+          const isLastStep =
+            currentVisibleIndex === this.visibleSteps.length - 1;
+
+          if (isLastStep) {
+            // On the last step, validate current step and submit the form
+            const isValid = await this.validateCurrentStep();
+            if (isValid) {
+              // Trigger form submission
+              this.handleSubmit(new Event('submit'));
+            } else {
+              this.handleValidationError();
+            }
+          } else {
+            // Not on the last step, validate and move to the next step
+            await this.nextStep();
+          }
+        }
+      });
+    });
+  }
+
   private updateSummary(): void {
     this.collectFormData();
     const summaryContent = document.getElementById('summaryContent');

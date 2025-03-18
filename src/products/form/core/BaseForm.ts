@@ -786,6 +786,25 @@ export abstract class BaseForm {
     this.validator.clearValidationState();
   }
 
+  protected setupKeyboardHandlers(): void {
+    // Base implementation that just prevents default form submission on Enter
+    const inputFields = this.form.querySelectorAll('input, textarea');
+
+    inputFields.forEach(field => {
+      field.addEventListener('keydown', (e: Event) => {
+        // Cast the event to KeyboardEvent
+        const keyEvent = e as KeyboardEvent;
+
+        // Check if the Enter key was pressed
+        if (keyEvent.key === 'Enter') {
+          // Prevent the default form submission
+          e.preventDefault();
+          // Each form type will define its own behavior by overriding this method
+        }
+      });
+    });
+  }
+
   private createSystemFields(): void {
     // Form name
     const nameInput = document.createElement('input');
